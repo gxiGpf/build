@@ -29,7 +29,7 @@ jobs:
           version: "18"
       - name: Build
         env:
-          SKIA_BINARIES_URL: "https://github.com/axojhf/cpp_library_build/releases/download/rust-skia/rust-skia-d3d-gl-textlayout-vulkan-slint-compatible-release.tar.gz"
+          SKIA_BINARIES_URL: "https://github.com/gxiGpf/build/releases/download/rust-skia/rust-skia-d3d-gl-textlayout-vulkan-slint-compatible-release.tar.gz"
         run: |
           $env:Path = "C:\ninja;$env:Path"
           git config --global core.longpaths true
