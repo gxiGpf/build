@@ -64,7 +64,7 @@ jobs:
           FreeType2_DIR_NAME: "freetype-2.13.2"
         run: |
           $env:Path = "C:\harfbuzz_install;C:\harfbuzz_install\lib;C:\ninja;$env:Path"
-          cd C:\harfbuzz ; meson build --wrap-mode=default --prefix=C:\harfbuzz_install ; meson compile
+          cd C:\harfbuzz ; meson build --wrap-mode=default --prefix=C:\harfbuzz_install ; cd build ; ninja install
           cd C:\${{ env.FreeType2_DIR_NAME }} ; mkdir build ; cd build
           cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=C:\freetype_install -DBUILD_SHARED_LIBS=ON -DFT_REQUIRE_HARFBUZZ=TRUE
           ninja ; ninja install
