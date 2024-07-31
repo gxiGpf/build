@@ -55,7 +55,7 @@ jobs:
           (new-object System.Net.WebClient).DownloadFile('${{ env.FreeType2_Release_URL }}','freetype.tar.xz')
           7z x freetype.tar.xz -so | 7z x -si -ttar -oC:\ ; rm freetype.tar.xz
           cd C:\ ; git clone --depth=1 ${{ env.HarfBuzz_GIT_URL }} -b ${{ env.HarfBuzz_LATEST_RELEASE_VERSION }}
-          choco install meson
+          pip3 install meson
       - uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: amd64
@@ -68,14 +68,16 @@ jobs:
           cd C:\${{ env.FreeType2_DIR_NAME }} ; mkdir build ; cd build
           cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=C:\freetype_install -DBUILD_SHARED_LIBS=ON -DFT_REQUIRE_HARFBUZZ=TRUE
           ninja ; ninja install
-          7z a C:\freetype_shared_release.7z C:\freetype_install
+          7z a C:\freetype_with_harfbuzz_shared_release.7z C:\freetype_install
+          7z a C:\harfbuzz_shared_release.7z C:\harfbuzz_install
       - uses: actions/upload-artifact@v4
         with:
-          name: FreeType2 Release Shared
-          path: C:\freetype_shared_release.7z
+          name: FreeType2 HarfBuzz Release Shared
+          path: C:\freetype_with_harfbuzz_shared_release.7z
       - name: Update freetype Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: freetype-build
           files: |
-            C:\freetype_shared_release.7z
+            C:\freetype_with_harfbuzz_shared_release.7z
+            C:\harfbuzz_shared_release.7z
