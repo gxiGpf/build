@@ -22,7 +22,7 @@ jobs:
           FreeType2_Release_URL: "https://github.com/gxiGpf/build/releases/download/src/freetype-2.13.2.tar.xz"
         run: |
           cd C:\ ; (new-object System.Net.WebClient).DownloadFile('${{ env.FreeType2_Release_URL }}','freetype.tar.xz')
-          7z x C:\freetype.tar.xz -so | 7z x -si -ttar -oC:\
+          7z x .\freetype.tar.xz -so | 7z x -si -ttar -oC:\ ; rm freetype.tar.xz
           cd C:\freetype-2.13.2 ; mkdir build ; cd build
           cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=C:\freetype_install -DBUILD_SHARED_LIBS=ON
           ninja ; ninja install
