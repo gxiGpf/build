@@ -46,13 +46,8 @@ jobs:
         run: |
           cd C:\vcpkg ; git pull ; .\bootstrap-vcpkg.bat
           vcpkg install harfbuzz[experimental-api,directwrite]:x64-windows harfbuzz[experimental-api,directwrite]:x64-windows-static harfbuzz[experimental-api,directwrite]:x64-windows-static-md
-      - uses: ilammy/msvc-dev-cmd@v1
-        with:
-          arch: amd64
-      - name: Build
+      - name: Pack HarfBuzz
         run: |
-          $env:Path = "C:\ninja;$env:Path"
-          cd C:\harfbuzz ; meson build --wrap-mode=default --prefix=C:\harfbuzz_install ; cd build ; ninja install
           7z a C:\harfbuzz_vcpkg_x64-windows.7z C:\vcpkg\installed\x64-windows
           7z a C:\harfbuzz_vcpkg_x64-windows-static.7z C:\vcpkg\installed\x64-windows-static
           7z a C:\harfbuzz_vcpkg_x64-windows-static-md.7z C:\vcpkg\installed\x64-windows-static-md
