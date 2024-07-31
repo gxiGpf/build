@@ -55,6 +55,7 @@ jobs:
           (new-object System.Net.WebClient).DownloadFile('${{ env.FreeType2_Release_URL }}','freetype.tar.xz')
           7z x freetype.tar.xz -so | 7z x -si -ttar -oC:\ ; rm freetype.tar.xz
           cd C:\ ; git clone --depth=1 ${{ env.HarfBuzz_GIT_URL }} -b ${{ env.HarfBuzz_LATEST_RELEASE_VERSION }}
+          choco install meson
       - uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: amd64
