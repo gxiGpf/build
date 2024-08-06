@@ -31,7 +31,7 @@ jobs:
           DEPS_LIB_DIR: "C:\\vcpkg\\installed\\x64-windows\\lib"
         run: |
           $env:Path = "C:\ninja;$env:Path"
-          cd C:\hackrf ; mkdir build ; cd build
+          cd C:\hackrf\host ; mkdir build ; cd build
           cmake .. -GNinja -DLIBUSB_INCLUDE_DIR=${{env.DEPS_INCLUDE_DIR}} -DLIBUSB_LIBRARIES=${{env.DEPS_LIB_DIR}} -DTHREADS_PTHREADS_INCLUDE_DIR=${{env.DEPS_INCLUDE_DIR}} -DTHREADS_PTHREADS_WIN32_LIBRARY=${{env.DEPS_LIB_DIR}} -DFFTW_INCLUDES=${{env.DEPS_INCLUDE_DIR}} -DFFTW_LIBRARIES=${{env.DEPS_LIB_DIR}} -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=C:\hackrf_install -DBUILD_SHARED_LIBS=ON
           ninja ; ninja install
           7z a C:\hackrf_vcpkg_latest.7z C:\hackrf_install
