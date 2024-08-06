@@ -27,8 +27,8 @@ jobs:
           vcpkg install pthreads:x64-windows-static libusb:x64-windows-static fftw3:x64-windows-static
       - name: Build
         env:
-          DEPS_INCLUDE_DIR: "C:\\vcpkg\\installed\\x64-windows\\include"
-          DEPS_LIB_DIR: "C:\\vcpkg\\installed\\x64-windows\\lib"
+          DEPS_INCLUDE_DIR: "C:\\vcpkg\\installed\\x64-windows-static\\include"
+          DEPS_LIB_DIR: "C:\\vcpkg\\installed\\x64-windows-static\\lib"
         run: |
           $env:Path = "C:\ninja;${{env.DEPS_INCLUDE_DIR}};$env:Path"
           cd C:\hackrf\host ; mkdir build ; cd build
