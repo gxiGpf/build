@@ -24,7 +24,7 @@ jobs:
       - name: Update Vcpkg
         run: |
           cd C:\vcpkg ; git pull ; .\bootstrap-vcpkg.bat
-          vcpkg install pthreads:x64-windows-static libusb:x64-windows-static fftw:x64-windows-static
+          vcpkg install pthreads:x64-windows-static libusb:x64-windows-static fftw3:x64-windows-static
       - name: Build
         env:
           DEPS_INCLUDE_DIR: "C:\\vcpkg\\installed\\x64-windows\\include"
