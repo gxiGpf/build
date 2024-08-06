@@ -32,7 +32,7 @@ jobs:
         run: |
           $env:Path = "C:\ninja;${{env.DEPS_INCLUDE_DIR}};$env:Path"
           cd C:\hackrf\host ; mkdir build ; cd build
-          cmake .. -GNinja -DLIBUSB_INCLUDE_DIR=${{env.DEPS_INCLUDE_DIR}}\libusb-1.0 -DLIBUSB_LIBRARIES=${{env.DEPS_LIB_DIR}} -DTHREADS_PTHREADS_INCLUDE_DIR=${{env.DEPS_INCLUDE_DIR}} -DTHREADS_PTHREADS_WIN32_LIBRARY=${{env.DEPS_LIB_DIR}} -DFFTW_INCLUDES=${{env.DEPS_INCLUDE_DIR}} -DFFTW_LIBRARIES=${{env.DEPS_LIB_DIR}} -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=C:\hackrf_install -DBUILD_SHARED_LIBS=ON
+          cmake .. -GNinja -DLIBUSB_INCLUDE_DIR=${{env.DEPS_INCLUDE_DIR}}\libusb-1.0 -DLIBUSB_LIBRARIES=${{env.DEPS_LIB_DIR}}\libusb-1.0.lib -DTHREADS_PTHREADS_INCLUDE_DIR=${{env.DEPS_INCLUDE_DIR}} -DTHREADS_PTHREADS_WIN32_LIBRARY=${{env.DEPS_LIB_DIR}}\pthreadVC3.lib -DFFTW_INCLUDES=${{env.DEPS_INCLUDE_DIR}} -DFFTW_LIBRARIES=${{env.DEPS_LIB_DIR}}\fftw3f.lib -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=C:\hackrf_install -DBUILD_SHARED_LIBS=ON
           ninja ; ninja install
           7z a C:\hackrf_vcpkg_latest.7z C:\hackrf_install
       - uses: actions/upload-artifact@v4
