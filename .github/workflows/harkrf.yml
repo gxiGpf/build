@@ -45,3 +45,43 @@ jobs:
           tag_name: hackrf-build
           files: |
             C:\hackrf_vcpkg_latest.7z
+
+  hackrf-vcpkg-md-build:
+    name: hackrf vcpkg md Build
+    runs-on: windows-2022
+    steps:
+      - name: Set Deps
+        env:
+          hackrf_GIT_URL: "https://github.com/greatscottgadgets/hackrf"
+          hackrf_LATEST_RELEASE_VERSION: "v2024.02.1"
+        run: |
+          (new-object System.Net.WebClient).DownloadFile('https://github.com/ninja-build/ninja/releases/download/v1.12.1/ninja-win.zip','ninja-win.zip')
+          7z x -aoa -oC:\ninja ninja-win.zip ; rm ninja-win.zip
+          cd C:\ ; git clone --depth=1 ${{ env.hackrf_GIT_URL }} -b ${{ env.hackrf_LATEST_RELEASE_VERSION }}
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: amd64
+      - name: Update Vcpkg
+        run: |
+          cd C:\vcpkg ; git pull ; .\bootstrap-vcpkg.bat
+          vcpkg install pthreads:x64-windows-static-md libusb:x64-windows-static-md fftw3:x64-windows-static-md
+      - name: Build
+        env:
+          DEPS_INCLUDE_DIR: "C:\\vcpkg\\installed\\x64-windows-static-md\\include"
+          DEPS_LIB_DIR: "C:\\vcpkg\\installed\\x64-windows-static-md\\lib"
+        run: |
+          $env:Path = "C:\ninja;${{env.DEPS_INCLUDE_DIR}};$env:Path"
+          cd C:\hackrf\host ; mkdir build ; cd build
+          cmake .. -GNinja -DLIBUSB_INCLUDE_DIR=${{env.DEPS_INCLUDE_DIR}}\libusb-1.0 -DLIBUSB_LIBRARIES=${{env.DEPS_LIB_DIR}}\libusb-1.0.lib -DTHREADS_PTHREADS_INCLUDE_DIR=${{env.DEPS_INCLUDE_DIR}} -DTHREADS_PTHREADS_WIN32_LIBRARY=${{env.DEPS_LIB_DIR}}\pthreadVC3.lib -DFFTW_INCLUDES=${{env.DEPS_INCLUDE_DIR}} -DFFTW_LIBRARIES=${{env.DEPS_LIB_DIR}}\fftw3f.lib -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=C:\hackrf_install -DBUILD_SHARED_LIBS=ON
+          ninja ; ninja install
+          7z a C:\hackrf_vcpkg_md_latest.7z C:\hackrf_install
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hackrf md Release Shared
+          path: C:\hackrf_vcpkg_md_latest.7z
+      - name: Update hackrf Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: hackrf-build
+          files: |
+            C:\hackrf_vcpkg_md_latest.7z
