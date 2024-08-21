@@ -25,7 +25,7 @@ jobs:
       - name: Build
         run: |
           $env:Path = "C:\ninja;$env:Path"
-          cd C:\harfbuzz ; meson build --wrap-mode=default --prefix=C:\harfbuzz_install ; cd build ; ninja install
+          cd C:\harfbuzz ; meson build -Dbuildtype=release --wrap-mode=default --prefix=C:\harfbuzz_install ; cd build ; ninja install
           7z a C:\harfbuzz_shared_main.7z C:\harfbuzz_install
       - uses: actions/upload-artifact@v4
         with:
@@ -38,24 +38,24 @@ jobs:
           files: |
             C:\harfbuzz_shared_main.7z
 
-  harfbuzz-vcpkg-build:
-    name: harfbuzz main new deps Build
-    runs-on: windows-2022
-    steps:
-      - name: Update Vcpkg
-        run: |
-          cd C:\vcpkg ; git pull ; .\bootstrap-vcpkg.bat
-          vcpkg install harfbuzz[experimental-api,directwrite]:x64-windows harfbuzz[experimental-api,directwrite]:x64-windows-static harfbuzz[experimental-api,directwrite]:x64-windows-static-md
-      - name: Pack HarfBuzz
-        run: |
-          7z a C:\harfbuzz_vcpkg_x64-windows.7z C:\vcpkg\installed\x64-windows
-          7z a C:\harfbuzz_vcpkg_x64-windows-static.7z C:\vcpkg\installed\x64-windows-static
-          7z a C:\harfbuzz_vcpkg_x64-windows-static-md.7z C:\vcpkg\installed\x64-windows-static-md
-      - name: Update harfbuzz Release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: harfbuzz-build
-          files: |
-            C:\harfbuzz_vcpkg_x64-windows.7z
-            C:\harfbuzz_vcpkg_x64-windows-static.7z
-            C:\harfbuzz_vcpkg_x64-windows-static-md.7z
+  # harfbuzz-vcpkg-build:
+  #   name: harfbuzz main new deps Build
+  #   runs-on: windows-2022
+  #   steps:
+  #     - name: Update Vcpkg
+  #       run: |
+  #         cd C:\vcpkg ; git pull ; .\bootstrap-vcpkg.bat
+  #         vcpkg install harfbuzz[experimental-api,directwrite]:x64-windows harfbuzz[experimental-api,directwrite]:x64-windows-static harfbuzz[experimental-api,directwrite]:x64-windows-static-md
+  #     - name: Pack HarfBuzz
+  #       run: |
+  #         7z a C:\harfbuzz_vcpkg_x64-windows.7z C:\vcpkg\installed\x64-windows
+  #         7z a C:\harfbuzz_vcpkg_x64-windows-static.7z C:\vcpkg\installed\x64-windows-static
+  #         7z a C:\harfbuzz_vcpkg_x64-windows-static-md.7z C:\vcpkg\installed\x64-windows-static-md
+  #     - name: Update harfbuzz Release
+  #       uses: softprops/action-gh-release@v2
+  #       with:
+  #         tag_name: harfbuzz-build
+  #         files: |
+  #           C:\harfbuzz_vcpkg_x64-windows.7z
+  #           C:\harfbuzz_vcpkg_x64-windows-static.7z
+  #           C:\harfbuzz_vcpkg_x64-windows-static-md.7z
