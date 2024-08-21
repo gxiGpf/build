@@ -6,7 +6,7 @@ on:
     branches:
       - harfbuzz
 jobs:
-  harfbuzz-main-new-deps-build:
+  harfbuzz-main-new-deps-release-build:
     name: harfbuzz main new deps Build
     runs-on: windows-2022
     steps:
@@ -38,8 +38,39 @@ jobs:
           files: |
             C:\harfbuzz_shared_main.7z
 
+  harfbuzz-main-new-deps-debug-build:
+    name: harfbuzz main new deps Build
+    runs-on: windows-2022
+    steps:
+      - name: Set Deps
+        env:
+          HarfBuzz_GIT_URL: "https://github.com/gxiGpf/harfbuzz"
+          HarfBuzz_LATEST_RELEASE_VERSION: "9.0.0"
+        run: |
+          (new-object System.Net.WebClient).DownloadFile('https://github.com/ninja-build/ninja/releases/download/v1.12.1/ninja-win.zip','ninja-win.zip')
+          7z x -aoa -oC:\ninja ninja-win.zip ; rm ninja-win.zip
+          cd C:\ ; git clone --depth=1 ${{ env.HarfBuzz_GIT_URL }}
+          pip3 install meson
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: amd64
+      - name: Build
+        run: |
+          $env:Path = "C:\ninja;$env:Path"
+          cd C:\harfbuzz ; meson build -Dbuildtype=debugoptimized --wrap-mode=default --prefix=C:\harfbuzz_install ; cd build ; ninja install
+          7z a C:\harfbuzz_shared_main_debugoptimized.7z C:\harfbuzz_install
+      - uses: actions/upload-artifact@v4
+        with:
+          name: HarfBuzz Release Shared debugoptimized
+          path: C:\harfbuzz_shared_main_debugoptimized.7z
+      - name: Update harfbuzz Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: harfbuzz-build
+          files: |
+            C:\harfbuzz_shared_main_debugoptimized.7z
   # harfbuzz-vcpkg-build:
-  #   name: harfbuzz main new deps Build
+  #   name: harfbuzz vcpkg Build
   #   runs-on: windows-2022
   #   steps:
   #     - name: Update Vcpkg
