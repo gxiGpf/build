@@ -7,7 +7,7 @@ on:
       - harfbuzz
 jobs:
   harfbuzz-main-new-deps-release-build:
-    name: harfbuzz main new deps Build
+    name: harfbuzz main new deps release build
     runs-on: windows-2022
     steps:
       - name: Set Deps
@@ -39,7 +39,7 @@ jobs:
             C:\harfbuzz_shared_main.7z
 
   harfbuzz-main-new-deps-debug-build:
-    name: harfbuzz main new deps Build
+    name: harfbuzz main new deps debug build
     runs-on: windows-2022
     steps:
       - name: Set Deps
