@@ -46,7 +46,7 @@ jobs:
     steps:
       - name: Set Deps
         env:
-          FreeType2_Release_URL: "https://github.com/gxiGpf/build/releases/download/src/freetype-2.13.2.tar.xz"
+          FreeType2_Release_URL: "https://github.com/gxiGpf/build/releases/download/src/freetype-2.13.3.tar.xz"
           HarfBuzz_GIT_URL: "https://github.com/harfbuzz/harfbuzz"
           HarfBuzz_LATEST_RELEASE_VERSION: "9.0.0"
         run: |
@@ -61,7 +61,7 @@ jobs:
           arch: amd64
       - name: Build
         env:
-          FreeType2_DIR_NAME: "freetype-2.13.2"
+          FreeType2_DIR_NAME: "freetype-2.13.3"
         run: |
           $env:Path = "C:\harfbuzz_install;C:\harfbuzz_install\lib;C:\ninja;$env:Path"
           cd C:\harfbuzz ; meson build --wrap-mode=default --prefix=C:\harfbuzz_install ; cd build ; ninja install
