@@ -29,5 +29,4 @@ jobs:
         with:
           tag_name: pathfinder-build
           files: |
-            C:\pathfinder_master_ReleaseSafe.7z
-            C:\pathfinder_master_ReleaseFast.7z
+            pathfinder_c.7z
