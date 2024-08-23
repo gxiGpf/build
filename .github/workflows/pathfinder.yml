@@ -1,0 +1,32 @@
+name: pathfinder Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - pathfinder
+jobs:
+  pathfinder-build:
+    name: pathfinder Build
+    runs-on: windows-2022
+    steps:
+      - name: Build Pack pathfinder
+        run: |
+          cd C:\ ; git clone --depth=1 https://github.com/servo/pathfinder
+          cd pathfinder
+          rustup update
+          cargo cinstall --destdir=C:\pathfinder_c --manifest-path Cargo.toml
+      - name: Build Pack pathfinder
+        run: |
+          7z a C:\pathfinder_c pathfinder_c.7z
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pathfinder_c
+          path: pathfinder_c.7z
+      - name: Update pathfinder Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: pathfinder-build
+          files: |
+            C:\pathfinder_master_ReleaseSafe.7z
+            C:\pathfinder_master_ReleaseFast.7z
