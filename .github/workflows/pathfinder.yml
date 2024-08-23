@@ -15,6 +15,7 @@ jobs:
           cd C:\ ; git clone --depth=1 https://github.com/servo/pathfinder
           cd pathfinder
           rustup update
+          cargo install cargo-c
           cargo cinstall --destdir=C:\pathfinder_c --manifest-path Cargo.toml
       - name: Build Pack pathfinder
         run: |
