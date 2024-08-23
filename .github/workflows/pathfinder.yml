@@ -10,16 +10,16 @@ jobs:
     name: pathfinder Build
     runs-on: windows-2022
     steps:
-      - name: Build Pack pathfinder
+      - name: Build pathfinder
         run: |
           cd C:\ ; git clone --depth=1 https://github.com/servo/pathfinder
           cd pathfinder
           rustup update
           cargo install cargo-c
           cargo cinstall --destdir=C:\pathfinder_c --manifest-path Cargo.toml
-      - name: Build Pack pathfinder
+      - name: Pack pathfinder
         run: |
-          7z a C:\pathfinder_c pathfinder_c.7z
+          7z a pathfinder_c.7z C:\pathfinder_c
       - uses: actions/upload-artifact@v4
         with:
           name: pathfinder_c
