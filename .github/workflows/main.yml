@@ -1,4 +1,4 @@
-name: zls Build
+name: Main Build
 
 on:
   workflow_dispatch:
