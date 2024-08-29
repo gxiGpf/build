@@ -16,17 +16,24 @@ jobs:
           cd pathfinder
           rustup update
           cargo install cargo-c
-          cargo cinstall --destdir=C:\pathfinder_c --manifest-path Cargo.toml
+          cargo cinstall --destdir=C:\pathfinder_c --manifest-path Cargo.toml --release
+          cargo cinstall --destdir=C:\pathfinder_c_debug --manifest-path Cargo.toml --debug
       - name: Pack pathfinder
         run: |
           7z a pathfinder_c.7z C:\pathfinder_c
+          7z a pathfinder_c_debug.7z C:\pathfinder_c_debug
       - uses: actions/upload-artifact@v4
         with:
           name: pathfinder_c
           path: pathfinder_c.7z
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pathfinder_c_debug
+          path: pathfinder_c_debug.7z
       - name: Update pathfinder Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: pathfinder-build
           files: |
             pathfinder_c.7z
+            pathfinder_c_debug.7z
