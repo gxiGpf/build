@@ -15,20 +15,15 @@ jobs:
           cd C:\ ; git clone --depth=1 https://github.com/zed-industries/zed
           cd zed ; rustup update ; rustup target add wasm32-wasip1
           cargo run --release
-          ls target
+          7z a C:\zed_release.7z C:\zed\target\release\zed.exe
           ls target\release
-      # - uses: actions/upload-artifact@v4
-      #   with:
-      #     name: zed_master_ReleaseSafe
-      #     path: C:\zed_master_ReleaseSafe.7z
-      # - uses: actions/upload-artifact@v4
-      #   with:
-      #     name: zed_master_ReleaseFast
-      #     path: C:\zed_master_ReleaseFast.7z
-      # - name: Update zed Release
-      #   uses: softprops/action-gh-release@v2
-      #   with:
-      #     tag_name: zed-build
-      #     files: |
-      #       C:\zed_master_ReleaseSafe.7z
-      #       C:\zed_master_ReleaseFast.7z
+      - uses: actions/upload-artifact@v4
+        with:
+          name: zed_release
+          path: C:\zed_release.7z
+      - name: Update zed Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: zed-build
+          files: |
+            C:\zed_release.7z
