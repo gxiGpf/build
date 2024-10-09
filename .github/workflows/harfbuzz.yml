@@ -13,7 +13,7 @@ jobs:
       - name: Set Deps
         env:
           HarfBuzz_GIT_URL: "https://github.com/gxiGpf/harfbuzz"
-          HarfBuzz_LATEST_RELEASE_VERSION: "9.0.0"
+          HarfBuzz_LATEST_RELEASE_VERSION: "10.0.1"
         run: |
           (new-object System.Net.WebClient).DownloadFile('https://github.com/ninja-build/ninja/releases/download/v1.12.1/ninja-win.zip','ninja-win.zip')
           7z x -aoa -oC:\ninja ninja-win.zip ; rm ninja-win.zip
@@ -45,7 +45,7 @@ jobs:
       - name: Set Deps
         env:
           HarfBuzz_GIT_URL: "https://github.com/gxiGpf/harfbuzz"
-          HarfBuzz_LATEST_RELEASE_VERSION: "9.0.0"
+          HarfBuzz_LATEST_RELEASE_VERSION: "10.0.1"
         run: |
           (new-object System.Net.WebClient).DownloadFile('https://github.com/ninja-build/ninja/releases/download/v1.12.1/ninja-win.zip','ninja-win.zip')
           7z x -aoa -oC:\ninja ninja-win.zip ; rm ninja-win.zip
