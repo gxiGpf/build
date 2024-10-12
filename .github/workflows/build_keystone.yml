@@ -25,7 +25,7 @@ jobs:
           $env:Path = "C:\ninja;$env:Path"
           cd C:\ ; git clone --depth=1 https://github.com/keystone-engine/keystone
           cd keystone ; mkdir build ; cd build
-          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=C:\keystone_install -DLLVM_TARGETS_TO_BUILD="all"
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=C:\keystone_install -DLLVM_TARGETS_TO_BUILD="AArch64;X86"
           ninja ; ninja install
           7z a C:\keystone_shared.7z C:\keystone_install
       - uses: actions/upload-artifact@v4
