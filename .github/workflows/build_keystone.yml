@@ -1,0 +1,40 @@
+name: keystone Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - keystone
+jobs:
+  keystone-build:
+    name: keystone Build
+    runs-on: windows-2022
+    steps:
+      - name: Set Deps
+        env:
+          Ninja_GIT_URL: "https://github.com/ninja-build/ninja"
+          Ninja_LATEST_RELEASE_VERSION: "v1.12.1"
+        run: |
+          (new-object System.Net.WebClient).DownloadFile('${{ env.Ninja_GIT_URL }}/releases/download/${{env.Ninja_LATEST_RELEASE_VERSION}}/ninja-win.zip','ninja-win.zip')
+          7z x -aoa -oC:\ninja ninja-win.zip ; rm ninja-win.zip
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: amd64
+      - name: Build Pack keystone
+        run: |
+          $env:Path = "C:\ninja;$env:Path"
+          cd C:\ ; git clone --depth=1 https://github.com/keystone-engine/keystone
+          cd keystone ; mkdir build
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=C:\keystone_install -DLLVM_TARGETS_TO_BUILD="all"
+          ninja ; ninja install
+          7z a C:\keystone_shared.7z C:\keystone_install
+      - uses: actions/upload-artifact@v4
+        with:
+          name: keystone_shared
+          path: C:\keystone_shared.7z
+      - name: Update keystone Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: keystone-build
+          files: |
+            C:\keystone_shared.7z
