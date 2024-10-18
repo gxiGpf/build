@@ -11,8 +11,10 @@ jobs:
     runs-on: windows-2022
     steps:
       - name: Build Pack zed
+        env: 
+          LATEST_VERSION: "v0.157.5"
         run: |
-          cd C:\ ; git clone --depth=1 https://github.com/zed-industries/zed
+          cd C:\ ; git clone --depth=1 https://github.com/zed-industries/zed -b ${{ env.LATEST_VERSION }}
           cd zed ; rustup update ; rustup target add wasm32-wasip1
           cargo run --release
           7z a C:\zed_release.7z C:\zed\target\release\zed.exe
