@@ -1,0 +1,42 @@
+name: f Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - f
+jobs:
+  f-build:
+    name: f Build
+    runs-on: windows-2022
+    env:
+      FRIDA_VERSION: "16.5.6"
+    steps:
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - name: Setup dependencies
+        run: |
+          cd C:\ ; git clone --depth=1 --recurse-submodules https://github.com/frida/frida.git -b ${{ env.FRIDA_VERSION }}
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: amd64
+      - name: Build
+        run: |
+          cd C:\frida ; ls
+          msbuild frida.sln /p:Configuration=Release /p:Platform=x64 /p:Projects="frida-core"
+      - name: Package Directories
+        run: |
+          7z a frida-win-x64-custom.7z C:\frida\build\frida-windows\x64-Release\bin
+      - uses: actions/upload-artifact@v4
+        with:
+          name: frida-win-x64-custom
+          path: frida-win-x64-custom.7z
+      # - name: Update modfda Release
+      #   uses: softprops/action-gh-release@v2
+      #   with:
+      #     tag_name: 
+      #     body: 'Frida '
+      #     files: |
+      #       
