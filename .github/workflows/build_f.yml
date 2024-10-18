@@ -11,6 +11,7 @@ jobs:
     runs-on: windows-2022
     env:
       FRIDA_VERSION: "16.5.6"
+      FRIDA_PREFIX: "C:\\frida-build"
     steps:
       - name: Install Python
         uses: actions/setup-python@v5
@@ -24,15 +25,18 @@ jobs:
           arch: amd64
       - name: Build
         run: |
-          cd C:\frida ; ls
-          msbuild frida.sln /p:Configuration=Release /p:Platform=x64 /p:Projects="frida-core"
+          cd C:\frida ; 
+          .\configure.bat --prefix=${{ env.FRIDA_PREFIX }} --host=windows-x86_64 --enable-shared --enable-gadget --enable-server --enable-portal --enable-inject -- "-Dfrida-gum:devkits=gum,gumjs -Dfrida-core:devkits=core"
+          .\make
+          .\make install
+          ls C:\frida-build
       - name: Package Directories
         run: |
-          7z a frida-win-x64-custom.7z C:\frida\build\frida-windows\x64-Release\bin
+          7z a frida-win-x64-devkits_core.7z ${{ env.FRIDA_PREFIX }}/lib/frida/devkits/core/
       - uses: actions/upload-artifact@v4
         with:
-          name: frida-win-x64-custom
-          path: frida-win-x64-custom.7z
+          name: frida-win-x64-devkits_core
+          path: frida-win-x64-devkits_core.7z
       # - name: Update modfda Release
       #   uses: softprops/action-gh-release@v2
       #   with:
