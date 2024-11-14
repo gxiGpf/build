@@ -23,7 +23,8 @@ jobs:
       - name: Build
         run: |
           $env:Path = "C:\ninja;$env:Path"
-          cd C:\wcdb ; mkdir build ; cd build
+          cd C:\wcdb ; git submodule update --init sqlcipher zstd
+          cd src ; mkdir build ; cd build
           cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=C:\wcdb_install -DBUILD_SHARED_LIBS=ON
           ninja ; ninja install
           7z a C:\wcdb_x64_shared.7z C:\wcdb_install
