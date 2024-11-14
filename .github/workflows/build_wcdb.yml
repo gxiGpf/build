@@ -27,10 +27,9 @@ jobs:
         run: |
           $env:Path = "C:\ninja;$env:Path"
           cd C:\wcdb\src ; mkdir build ; cd build
-          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release
-          ninja
-          rm -r C:\wcdb\src\build\CMakeFiles
-          7z a C:\wcdb_x64_shared.7z C:\wcdb\src\build
+          cmake ..
+          cmake --build . --parallel --config Release
+          7z a C:\wcdb_x64_shared.7z C:\wcdb\src\build\Release C:\wcdb\src\build\export_headers
       - uses: actions/upload-artifact@v4
         with:
           name: wcdb
