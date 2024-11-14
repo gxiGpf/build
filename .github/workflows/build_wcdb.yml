@@ -1,0 +1,39 @@
+name: wcdb Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - wcdb
+jobs:
+  wcdb-build:
+    name: wcdb Build
+    runs-on: windows-2022
+    steps:
+      - name: Set Deps
+        env:
+          WCDB_GIT_URL: "https://github.com/Tencent/wcdb"
+        run: |
+          (new-object System.Net.WebClient).DownloadFile('https://github.com/ninja-build/ninja/releases/download/v1.12.1/ninja-win.zip','ninja-win.zip')
+          7z x -aoa -oC:\ninja ninja-win.zip ; rm ninja-win.zip
+          cd C:\ ; git clone --depth=1 ${{ env.WCDB_GIT_URL }}
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: amd64
+      - name: Build
+        run: |
+          $env:Path = "C:\ninja;$env:Path"
+          cd C:\wcdb ; mkdir build ; cd build
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=C:\wcdb_install -DBUILD_SHARED_LIBS=ON
+          ninja ; ninja install
+          7z a C:\wcdb_x64_shared.7z C:\wcdb_install
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wcdb
+          path: C:\wcdb_x64_shared.7z
+      - name: Update freetype Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: wcdb-build
+          files: |
+            C:\wcdb_x64_shared.7z
