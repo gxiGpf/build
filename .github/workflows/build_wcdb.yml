@@ -26,7 +26,7 @@ jobs:
       - name: Build
         run: |
           $env:Path = "C:\ninja;$env:Path"
-          cd src ; mkdir build ; cd build
+          cd C:\wcdb\src ; mkdir build ; cd build
           cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release
           ninja
           rm -r C:\wcdb\src\build\CMakeFiles
