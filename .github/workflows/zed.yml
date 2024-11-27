@@ -14,8 +14,9 @@ jobs:
         env: 
           LATEST_VERSION: "v0.162.5"
         run: |
-          # cd C:\ ; git clone --depth=1 https://github.com/zed-industries/zed -b ${{ env.LATEST_VERSION }}
-          cd C:\ ; git clone --depth=1 https://github.com/zed-industries/zed
+          git config --system core.longpaths true
+          cd C:\ ; git clone --depth=1 https://github.com/zed-industries/zed -b ${{ env.LATEST_VERSION }}
+          # cd C:\ ; git clone --depth=1 https://github.com/zed-industries/zed
           cd zed ; rustup update ; rustup target add wasm32-wasip1
           cargo run --release
           7z a C:\zed_release.7z C:\zed\target\release\zed.exe
