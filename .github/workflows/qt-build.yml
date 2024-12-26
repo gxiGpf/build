@@ -13,9 +13,10 @@ jobs:
     steps:
       - name: Prapare Env
         run: |
-          brew update ; brew install llvm sevenzip
+          brew update ; brew install llvm sevenzip ninja
       - name: Build Pack qt
         run: |
+          export PATH="/usr/local/opt/llvm/bin:$PATH"
           cd ~ ; git clone --depth=1 https://github.com/qt/qt5.git -b ${{ env.QT_LATEST_LTS }}
           cd qt5
           perl init-repository -f --module-subset=qt5compat,qt3d,qtbase,qtcharts,qtdeclarative,qtimageformats,qtquicktimeline,qtquick3d,qtshadertools,qtsvg,qtmultimedia
