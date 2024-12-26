@@ -29,14 +29,14 @@ jobs:
           ./configure -release -shared -prefix ~/Qt${{ env.QT_LATEST_LTS }}_build -confirm-license -nomake examples -nomake tests -qt-zlib -qt-libjpeg -qt-libpng -qt-freetype -qt-pcre -qt-harfbuzz -qt-sqlite -no-sql-psql -qt-tiff -qt-webp
           cmake --build . --parallel
           cmake --install .
-          7zz a Qt${{ env.QT_LATEST_LTS }}_mac_release_build.7z ~/Qt${{ env.QT_LATEST_LTS }}_build
+          7zz a ~/Qt${{ env.QT_LATEST_LTS }}_mac_release_build.7z ~/Qt${{ env.QT_LATEST_LTS }}_build
       - uses: actions/upload-artifact@v4
         with:
           name: qt_master_ReleaseSafe
-          path: Qt${{ env.QT_LATEST_LTS }}_mac_release_build.7z
+          path: ~/Qt${{ env.QT_LATEST_LTS }}_mac_release_build.7z
       - name: Update qt Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: qt-build
           files: |
-            Qt${{ env.QT_LATEST_LTS }}_mac_release_build.7z
+            ~/Qt${{ env.QT_LATEST_LTS }}_mac_release_build.7z
