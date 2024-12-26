@@ -24,6 +24,8 @@ jobs:
           export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
           export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
           export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
+          export CC="clang"
+          export CXX="clang++"
           clang -v
           cd ~/qt5
           ./configure -release -shared -prefix ~/Qt${{ env.QT_LATEST_LTS }}_build -confirm-license -nomake examples -nomake tests -qt-zlib -qt-libjpeg -qt-libpng -qt-freetype -qt-pcre -qt-harfbuzz -qt-sqlite -no-sql-psql -qt-tiff -qt-webp
