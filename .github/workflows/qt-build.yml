@@ -1,0 +1,36 @@
+name: qt Build
+
+on:
+  push:
+    branches:
+      - qt-build
+jobs:
+  qt-lts-macos-build:
+    name: Qt Latest LTS MacOS Build
+    runs-on: macos-15
+    env:
+      QT_LATEST_LTS: "6.8"
+    steps:
+      - name: Prapare Env
+        run: |
+          brew update ; brew install llvm sevenzip
+      - name: Build Pack qt
+        run: |
+          cd ~ ; git clone --depth=1 https://github.com/qt/qt5.git -b ${{ env.QT_LATEST_LTS }}
+          cd qt5
+          perl init-repository -f --module-subset=qt5compat,qt3d,qtbase,qtcharts,qtdeclarative,qtimageformats,qtquicktimeline,qtquick3d,qtshadertools,qtsvg,qtmultimedia
+          ./configure -release -shared -prefix ~/Qt${{ env.QT_LATEST_LTS }}_build -confirm-license -nomake examples -nomake tests -qt-zlib -qt-libjpeg -qt-libpng -qt-freetype -qt-pcre -qt-harfbuzz -qt-sqlite -no-sql-psql -qt-tiff -qt-webp
+          cmake --build . --parallel
+          cmake --install .
+          7zz a Qt${{ env.QT_LATEST_LTS }}_build.7z ~/Qt${{ env.QT_LATEST_LTS }}_build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: qt_master_ReleaseSafe
+          path: C:\qt_master_ReleaseSafe.7z
+      # - name: Update qt Release
+      #   uses: softprops/action-gh-release@v2
+      #   with:
+      #     tag_name: qt-build
+      #     files: |
+      #       C:\qt_master_ReleaseSafe.7z
+      #       C:\qt_master_ReleaseFast.7z
