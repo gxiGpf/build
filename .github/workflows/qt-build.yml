@@ -14,26 +14,29 @@ jobs:
       - name: Prapare Env
         run: |
           brew update ; brew install llvm sevenzip ninja
+      - name: Clone Qt repository
+        run: |
+          cd ~ ; git clone --depth=1 https://github.com/qt/qt5.git -b ${{ env.QT_LATEST_LTS }}
+          cd qt5
+          perl init-repository -f --module-subset=qt5compat,qt3d,qtbase,qtcharts,qtdeclarative,qtimageformats,qtquicktimeline,qtquick3d,qtshadertools,qtsvg,qtmultimedia
       - name: Build Pack qt
         run: |
           export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
           export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
           export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
-          cd ~ ; git clone --depth=1 https://github.com/qt/qt5.git -b ${{ env.QT_LATEST_LTS }}
-          cd qt5
-          perl init-repository -f --module-subset=qt5compat,qt3d,qtbase,qtcharts,qtdeclarative,qtimageformats,qtquicktimeline,qtquick3d,qtshadertools,qtsvg,qtmultimedia
+          clang -v
+          cd ~/qt5
           ./configure -release -shared -prefix ~/Qt${{ env.QT_LATEST_LTS }}_build -confirm-license -nomake examples -nomake tests -qt-zlib -qt-libjpeg -qt-libpng -qt-freetype -qt-pcre -qt-harfbuzz -qt-sqlite -no-sql-psql -qt-tiff -qt-webp
           cmake --build . --parallel
           cmake --install .
-          7zz a Qt${{ env.QT_LATEST_LTS }}_build.7z ~/Qt${{ env.QT_LATEST_LTS }}_build
+          7zz a Qt${{ env.QT_LATEST_LTS }}_mac_release_build.7z ~/Qt${{ env.QT_LATEST_LTS }}_build
       - uses: actions/upload-artifact@v4
         with:
           name: qt_master_ReleaseSafe
-          path: C:\qt_master_ReleaseSafe.7z
-      # - name: Update qt Release
-      #   uses: softprops/action-gh-release@v2
-      #   with:
-      #     tag_name: qt-build
-      #     files: |
-      #       C:\qt_master_ReleaseSafe.7z
-      #       C:\qt_master_ReleaseFast.7z
+          path: Qt${{ env.QT_LATEST_LTS }}_mac_release_build.7z
+      - name: Update qt Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: qt-build
+          files: |
+            Qt${{ env.QT_LATEST_LTS }}_mac_release_build.7z
