@@ -13,12 +13,12 @@ jobs:
         run: |
           sudo apt update
           sudo apt install wget build-essential make libncurses5-dev -y
-          git clone --depth=1 https://github.dev/gxiGpf/build -b armv5_gcc_uclibc
+          git clone --depth=1 https://github.com/gxiGpf/build -b armv5_gcc_uclibc
           wget https://buildroot.org/downloads/buildroot-2024.11.tar.gz
           tar -zxvf buildroot-2024.11.tar.gz
           cp armv5_gcc_uclibc/.config buildroot-2024.11/
           cd buildroot-2024.11
-          make toolchain
+          make toolchain -j
           pwd
       - uses: actions/upload-artifact@v4
         with:
