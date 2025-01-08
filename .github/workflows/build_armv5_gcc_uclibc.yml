@@ -7,7 +7,7 @@ on:
 jobs:
   armv5_gcc_uclibc-build:
     name: armv5_gcc_uclibc Build
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Build Pack armv5_gcc_uclibc
         run: |
@@ -18,7 +18,7 @@ jobs:
           tar -zxvf buildroot-2024.02.9.tar.gz
           cp build/.config buildroot-2024.02.9/
           cd buildroot-2024.02.9
-          make toolchain -j$(nproc) V=0
+          make toolchain -j V=0
           pwd
       - name: Pack toolchain
         run: |
