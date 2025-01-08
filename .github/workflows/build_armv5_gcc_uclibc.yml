@@ -12,14 +12,17 @@ jobs:
       - name: Build Pack armv5_gcc_uclibc
         run: |
           sudo apt update
-          sudo apt install wget build-essential gcc make libncurses5-dev qemu-user -y
+          sudo apt install 7zip wget build-essential gcc make libncurses5-dev qemu-user -y
           git clone --depth=1 https://github.com/gxiGpf/build -b armv5_gcc_uclibc
           wget https://buildroot.org/downloads/buildroot-2024.02.9.tar.gz
           tar -zxvf buildroot-2024.02.9.tar.gz
           cp build/.config buildroot-2024.02.9/
           cd buildroot-2024.02.9
-          make toolchain -j
+          make toolchain -j$(nproc) V=0
           pwd
+      - name: Pack toolchain
+        run: |
+          7zz a /home/runner/work/armv5_gcc_uclibc_linux3.0.x.7z 
       - uses: actions/upload-artifact@v4
         with:
           name: armv5_gcc_uclibc_toolchain
