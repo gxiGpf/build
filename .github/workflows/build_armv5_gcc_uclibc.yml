@@ -22,7 +22,7 @@ jobs:
           pwd
       - name: Pack toolchain
         run: |
-          7z a /home/runner/work/armv5_gcc_uclibc_linux3.0.x.7z /home/runner/work/build/build/buildroot-2024.02.9/output/host
+          7z a /home/runner/work/armv5_gcc_uclibc_linux3.0.8.7z /home/runner/work/build/build/buildroot-2024.02.9/output/host
       - name: Update buildroot Release
         uses: softprops/action-gh-release@v2
         with:
