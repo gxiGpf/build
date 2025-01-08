@@ -1,0 +1,27 @@
+name: armv5_gcc_uclibc Build
+
+on:
+  push:
+    branches:
+      - armv5_gcc_uclibc
+jobs:
+  armv5_gcc_uclibc-build:
+    name: armv5_gcc_uclibc Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build Pack armv5_gcc_uclibc
+        run: |
+          sudo apt update
+          sudo apt install wget build-essential make libncurses5-dev -y
+          git clone --depth=1 https://github.dev/gxiGpf/build -b armv5_gcc_uclibc
+          wget https://buildroot.org/downloads/buildroot-2024.11.tar.gz
+          tar -zxvf buildroot-2024.11.tar.gz
+          cp armv5_gcc_uclibc/.config buildroot-2024.11/
+          cd buildroot-2024.11
+          make toolchain
+          pwd
+      - uses: actions/upload-artifact@v4
+        with:
+          name: armv5_gcc_uclibc_toolchain
+          path: buildroot-2024.11/output/host
+
