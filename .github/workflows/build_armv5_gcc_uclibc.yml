@@ -18,7 +18,7 @@ jobs:
           tar -zxvf buildroot-2024.02.9.tar.gz
           cp build/.config buildroot-2024.02.9/
           cd buildroot-2024.02.9
-          make toolchain -j V=0
+          make toolchain V=0
           pwd
       - name: Pack toolchain
         run: |
