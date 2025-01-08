@@ -12,12 +12,13 @@ jobs:
       - name: Build Pack armv5_gcc_uclibc
         run: |
           sudo apt update
-          sudo apt install wget build-essential make libncurses5-dev -y
+          sudo apt install wget build-essential gcc make libncurses5-dev qemu-user -y
           git clone --depth=1 https://github.com/gxiGpf/build -b armv5_gcc_uclibc
           wget https://buildroot.org/downloads/buildroot-2024.11.tar.gz
           tar -zxvf buildroot-2024.11.tar.gz
-          cp build/.config buildroot-2024.11/
+          cp build/.config_gcc buildroot-2024.11/
           cd buildroot-2024.11
+          mv .config_gcc .config
           make toolchain -j
           pwd
       - uses: actions/upload-artifact@v4
