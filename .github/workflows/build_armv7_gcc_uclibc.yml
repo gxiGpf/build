@@ -1,19 +1,19 @@
-name: armv5_gcc_uclibc Build
+name: armv7_gcc_uclibc Build
 
 on:
   push:
     branches:
-      - armv5_gcc_uclibc
+      - armv7_gcc_uclibc
 jobs:
-  armv5_gcc_uclibc-build:
-    name: armv5_gcc_uclibc Build
+  armv7_gcc_uclibc-build:
+    name: armv7_gcc_uclibc Build
     runs-on: ubuntu-24.04
     steps:
-      - name: Build Pack armv5_gcc_uclibc
+      - name: Build Pack armv7_gcc_uclibc
         run: |
           sudo apt update
           sudo apt install 7zip wget build-essential gcc make libncurses5-dev qemu-user -y
-          git clone --depth=1 https://github.com/gxiGpf/build -b armv5_gcc_uclibc
+          git clone --depth=1 https://github.com/gxiGpf/build -b armv7_gcc_uclibc
           wget https://buildroot.org/downloads/buildroot-2024.02.9.tar.gz
           tar -zxvf buildroot-2024.02.9.tar.gz
           cp build/.config buildroot-2024.02.9/
@@ -22,11 +22,11 @@ jobs:
           pwd
       - name: Pack toolchain
         run: |
-          7z a /home/runner/work/armv5_gcc_uclibc_linux3.0.8.7z /home/runner/work/build/build/buildroot-2024.02.9/output/images
+          7z a /home/runner/work/armv7_gcc_uclibc_linux4.9.37.7z /home/runner/work/build/build/buildroot-2024.02.9/output/images
       - name: Update buildroot Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: buildroot-build
           files: |
-            /home/runner/work/armv5_gcc_uclibc_linux3.0.8.7z
+            /home/runner/work/armv7_gcc_uclibc_linux4.9.37.7z
 
