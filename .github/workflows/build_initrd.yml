@@ -1,0 +1,128 @@
+name: initrd Build
+
+on:
+  push:
+    branches:
+      - initrd
+jobs:
+  # initrd-build:
+  #   name: initrd Build
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Build initrd
+  #       run: |
+  #         wget https://snapshot.debian.org/archive/debian/20210922T025414Z/pool/main/l/linux-signed-amd64/linux-image-5.14.0-1-amd64_5.14.6-2_amd64.deb
+  #         dpkg -x linux-image-5.14.0-1-amd64_5.14.6-2_amd64.deb linux-image-dir
+  #         git clone --depth=1 https://github.com/gxiGpf/build -b initrd alpine-initrd
+  #         cd alpine-initrd
+  #         chmod -R 777 docker/
+  #         cd docker/ && docker build -t lucks/alpine-builder .
+  #         mkdir alpine
+  #         sudo docker run -i --rm -v "$PWD/alpine/:/alpine/" lucks/alpine-builder
+  #         cd alpine/
+  #         sudo cp -r /home/runner/work/build/build/linux-image-dir/lib ./
+  #         sudo depmod -a -b ./ -o ./ 5.14.0-1-amd64
+  #         sudo find . | sudo cpio -o -H newc | xz -C crc32 -z -9 --threads=0 -c - > ../alpine-initrd.xz
+  #     - uses: actions/upload-artifact@v4
+  #       with:
+  #         name: alpine-initrd-3.4
+  #         path: /home/runner/work/build/build/alpine-initrd/docker/alpine-initrd.xz
+  #     - name: Update initrd Release
+  #       uses: softprops/action-gh-release@v2
+  #       with:
+  #         tag_name: initrd-build
+  #         files: |
+  #           /home/runner/work/build/build/alpine-initrd/docker/alpine-initrd.xz
+
+  # initrd-latest-build:
+  #   name: initrd latest Build
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Build initrd
+  #       run: |
+  #         wget https://snapshot.debian.org/archive/debian/20210922T025414Z/pool/main/l/linux-signed-amd64/linux-image-5.14.0-1-amd64_5.14.6-2_amd64.deb
+  #         dpkg -x linux-image-5.14.0-1-amd64_5.14.6-2_amd64.deb linux-image-dir
+  #         git clone --depth=1 https://github.com/gxiGpf/build -b initrd alpine-initrd
+  #         cd alpine-initrd
+  #         chmod -R 777 docker_latest/
+  #         cd docker_latest/ && docker build -t lucks/alpine-builder .
+  #         mkdir alpine
+  #         sudo docker run -i --rm -v "$PWD/alpine/:/alpine/" lucks/alpine-builder
+  #         cd alpine/
+  #         sudo cp -r /home/runner/work/build/build/linux-image-dir/lib ./
+  #         sudo depmod -a -b ./ -o ./ 5.14.0-1-amd64
+  #         sudo find . | sudo cpio -o -H newc | xz -C crc32 -z -9 --threads=0 -c - > ../alpine-latest-initrd.xz
+  #     - uses: actions/upload-artifact@v4
+  #       with:
+  #         name: alpine-initrd-latest
+  #         path: /home/runner/work/build/build/alpine-initrd/docker_latest/alpine-latest-initrd.xz
+  #     - name: Update initrd Release
+  #       uses: softprops/action-gh-release@v2
+  #       with:
+  #         tag_name: initrd-build
+  #         files: |
+  #           /home/runner/work/build/build/alpine-initrd/docker_latest/alpine-latest-initrd.xz
+
+  initrd-edge-build:
+    name: initrd edge Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build initrd
+        run: |
+          wget https://snapshot.debian.org/archive/debian/20210922T025414Z/pool/main/l/linux-signed-amd64/linux-image-5.14.0-1-amd64_5.14.6-2_amd64.deb
+          dpkg -x linux-image-5.14.0-1-amd64_5.14.6-2_amd64.deb linux-image-dir
+          git clone --depth=1 https://github.com/gxiGpf/build -b initrd alpine-initrd
+          cd alpine-initrd
+          chmod -R 777 docker_edge/
+          cd docker_edge/ && docker build -t lucks/alpine-builder .
+          mkdir alpine
+          sudo docker run -i --rm -v "$PWD/alpine/:/alpine/" lucks/alpine-builder
+          cd alpine/
+          sudo cp -r /home/runner/work/build/build/linux-image-dir/lib ./
+          sudo depmod -a -b ./ -o ./ 5.14.0-1-amd64
+          sudo sed -i 's/#\(ttyS0.*\)/\1/' etc/inittab
+          sudo bash -c "echo ttyS0 >> etc/securetty"
+          sudo find . | sudo cpio -o -H newc | xz -C crc32 -z -9 --threads=0 -c - > ../alpine-edge-initrd.xz
+      - uses: actions/upload-artifact@v4
+        with:
+          name: alpine-initrd-edge
+          path: /home/runner/work/build/build/alpine-initrd/docker_edge/alpine-edge-initrd.xz
+      - name: Update initrd Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: initrd-build
+          files: |
+            /home/runner/work/build/build/alpine-initrd/docker_edge/alpine-edge-initrd.xz
+
+  # initrd-edge-linux-lts-build:
+  #   name: initrd edge linux-lts Build
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Build initrd
+  #       run: |
+  #         sudo apt update
+  #         sudo apt install 7zip -y
+  #         git clone --depth=1 https://github.com/gxiGpf/build -b initrd alpine-initrd
+  #         cd alpine-initrd
+  #         chmod -R 777 alpine_edge/
+  #         cd alpine_edge/ && docker build -t lucks/alpine-builder .
+  #         mkdir alpine
+  #         sudo docker run -i --rm -v "$PWD/alpine/:/alpine/" lucks/alpine-builder
+  #         cd alpine/
+  #         sudo sed -i 's/#\(ttyS0.*\)/\1/' etc/inittab
+  #         sudo bash -c "echo ttyS0 >> etc/securetty"
+  #         sudo find . | sudo cpio -o -H newc | xz -C crc32 -z -9 --threads=0 -c - > ../alpine-edge-linux-lts-initrd.xz
+  #         sudo mv boot/vmlinuz-lts ../alpine-edge-vmlinuz-lts
+  #         sudo chmod 777 ../alpine-edge-vmlinuz-lts
+  #         7z a /home/runner/work/build/build/alpine-initrd/alpine_edge/alpine-edge-linux-lts-vmlinux-initrd.7z ../alpine-edge-linux-lts-initrd.xz ../alpine-edge-vmlinuz-lts
+  #     - uses: actions/upload-artifact@v4
+  #       with:
+  #         name: alpine-edge-linux-lts-initrd
+  #         path: /home/runner/work/build/build/alpine-initrd/alpine_edge/alpine-edge-linux-lts-initrd.xz
+  #     - name: Update initrd Release
+  #       uses: softprops/action-gh-release@v2
+  #       with:
+  #         tag_name: initrd-build
+  #         files: |
+  #           /home/runner/work/build/build/alpine-initrd/alpine_edge/alpine-edge-linux-lts-initrd.xz
+  #           /home/runner/work/build/build/alpine-initrd/alpine_edge/alpine-edge-linux-lts-vmlinux-initrd.7z
