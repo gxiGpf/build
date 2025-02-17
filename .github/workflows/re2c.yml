@@ -1,0 +1,34 @@
+name: re2c Build
+
+on:
+  push:
+    branches:
+      - re2c
+jobs:
+  re2c-build:
+    name: re2c Build
+    runs-on: windows-2022
+    steps:
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: amd64
+      - name: Build Pack re2c
+        run: |
+          (new-object System.Net.WebClient).DownloadFile('https://github.com/ninja-build/ninja/releases/download/v1.12.1/ninja-win.zip','ninja-win.zip')
+          7z x -aoa -oC:\ninja ninja-win.zip ; rm ninja-win.zip
+          $env:Path = "C:\ninja;$env:Path"
+          cd C:\ ; git clone --depth=1 https://github.com/skvadrik/re2c
+          cd re2c ; mkdir build_release ; cd build_release
+          cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=C:\re2c_install
+          ninja ; ninja install
+          7z a C:\re2c_win_amd64.7z C:\re2c_install
+      - uses: actions/upload-artifact@v4
+        with:
+          name: re2c_win_amd64
+          path: C:\re2c_win_amd64.7z
+      - name: Update re2c Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: re2c-build
+          files: |
+            C:\re2c_win_amd64.7z
