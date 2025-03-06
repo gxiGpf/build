@@ -10,6 +10,9 @@ jobs:
     name: zed Build
     runs-on: windows-2022
     steps:
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: amd64
       - name: Build Pack zed
         env: 
           LATEST_VERSION: "v0.177.3-pre"
