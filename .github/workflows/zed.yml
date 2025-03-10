@@ -26,7 +26,10 @@ jobs:
           cd zed
           Set-Content -Path ".cargo/config.toml" -Value @"
           [target."cfg(all())"]
-          rustflags = []
+          rustflags = ["--cfg",
+          "windows_slim_errors",
+          "-C",
+          "target-feature=+crt-static"]
           [profile.release]
           debug = false
           "@
