@@ -15,7 +15,7 @@ jobs:
           arch: amd64
       - name: Build Pack zed
         env: 
-          LATEST_VERSION: "v0.177.3-pre"
+          LATEST_VERSION: "v0.176.3"
         run: |
           git config --system core.longpaths true
           cd C:\ ; git clone --depth=1 https://github.com/zed-industries/zed -b ${{ env.LATEST_VERSION }}
