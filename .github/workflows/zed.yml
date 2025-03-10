@@ -24,11 +24,12 @@ jobs:
           cd C:\ ; git clone --depth=1 https://github.com/zed-industries/zed -b ${{ env.LATEST_VERSION }}
           # cd C:\ ; git clone --depth=1 https://github.com/zed-industries/zed
           cd zed
-          $rustflags = @("")
-          $config_path = ".cargo/config.toml"
-          $config = Get-Content $config_path | ConvertFrom-Toml
-          $config.target.Item("cfg(all())").rustflags = $rustflags
-          $config | ConvertTo-Toml -Depth 5 | Out-File $config_path
+          Set-Content -Path ".cargo/config.toml" -Value @"
+          [target."cfg(all())"]
+          rustflags = []
+          [profile.release]
+          debug = false
+          "@
           rustup update ; rustup target add wasm32-wasip1
           cargo run --release
           7z a C:\zed_release.7z C:\zed\target\release\zed.exe
