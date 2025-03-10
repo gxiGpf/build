@@ -18,9 +18,18 @@ jobs:
           LATEST_VERSION: "v0.176.3"
         run: |
           git config --system core.longpaths true
+          New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" `
+            -Name "LongPathsEnabled" -Value 1 -PropertyType DWORD -Force
+          Install-Module -Name PSToml -Scope CurrentUser -Force
           cd C:\ ; git clone --depth=1 https://github.com/zed-industries/zed -b ${{ env.LATEST_VERSION }}
           # cd C:\ ; git clone --depth=1 https://github.com/zed-industries/zed
-          cd zed ; rustup update ; rustup target add wasm32-wasip1
+          cd zed
+          $rustflags = ""
+          $config_path = ".cargo/config.toml"
+          $config = Get-Content $config_path | ConvertFrom-Toml
+          $config.target.Item("cfg(all())").rustflags = $rustflags
+          $config | ConvertTo-Toml -Depth 5 | Out-File $config_path
+          rustup update ; rustup target add wasm32-wasip1
           cargo run --release
           7z a C:\zed_release.7z C:\zed\target\release\zed.exe
           ls target\release
