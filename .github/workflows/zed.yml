@@ -24,7 +24,7 @@ jobs:
           cd C:\ ; git clone --depth=1 https://github.com/zed-industries/zed -b ${{ env.LATEST_VERSION }}
           # cd C:\ ; git clone --depth=1 https://github.com/zed-industries/zed
           cd zed
-          $rustflags = ""
+          $rustflags = [""]
           $config_path = ".cargo/config.toml"
           $config = Get-Content $config_path | ConvertFrom-Toml
           $config.target.Item("cfg(all())").rustflags = $rustflags
