@@ -15,7 +15,7 @@ jobs:
           arch: amd64
       - name: Build Pack zed
         env: 
-          LATEST_VERSION: "v0.178.5"
+          LATEST_VERSION: "v0.179.4"
         run: |
           git config --system core.longpaths true
           New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" `
