@@ -47,7 +47,7 @@ jobs:
           mkdir build-release
           cd build-release
           cmake ..\llvm \
-            -DCMAKE_INSTALL_PREFIX=C:\llvm19-assert \
+            -DCMAKE_INSTALL_PREFIX=C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt \
             -DCMAKE_BUILD_TYPE=Release \
             -DLLVM_ENABLE_PROJECTS="lld;clang" \
             -DLLVM_ENABLE_LIBXML2=OFF \
@@ -55,6 +55,7 @@ jobs:
             -DLLVM_ENABLE_LIBEDIT=OFF \
             -DLLVM_ENABLE_ASSERTIONS=ON \
             -DLLVM_PARALLEL_LINK_JOBS=1 \
+            -DLLVM_USE_CRT_RELEASE=MT \
             -G Ninja
           ninja install
       - name: Pack llvm
