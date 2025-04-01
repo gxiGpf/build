@@ -17,17 +17,14 @@ jobs:
         run: |
           choco install wget
           cd C:\
-          wget https://github.com/gxiGpf/build/releases/download/src/clang-19.1.7.src.tar.xz
-          wget https://github.com/gxiGpf/build/releases/download/src/llvm-19.1.7.src.tar.xz
-          wget https://github.com/gxiGpf/build/releases/download/src/lld-19.1.7.src.tar.xz
-          # (new-object System.Net.WebClient).DownloadFile('https://github.com/gxiGpf/build/releases/download/src/clang-19.1.7.src.tar.xz', 'C:\clang.src.tar.xz')
-          # (new-object System.Net.WebClient).DownloadFile('https://github.com/gxiGpf/build/releases/download/src/llvm-19.1.7.src.tar.xz','C:\llvm.src.tar.xz')
-          # (new-object System.Net.WebClient).DownloadFile('https://github.com/gxiGpf/build/releases/download/src/lld-19.1.7.src.tar.xz','C:\lld.src.tar.xz')
+          wget https://github.com/llvm/llvm-project/releases/download/llvmorg-19.1.7/clang-19.1.7.src.tar.xz
+          wget https://github.com/llvm/llvm-project/releases/download/llvmorg-19.1.7/llvm-19.1.7.src.tar.xz
+          wget https://github.com/llvm/llvm-project/releases/download/llvmorg-19.1.7/lld-19.1.7.src.tar.xz
           ls
-          tar -xvf C:\clang.src.tar.xz -C C:\
+          tar -xvf C:\clang-19.1.7.src.tar.xz -C C:\
           ls
-          tar -xvf C:\llvm.src.tar.xz -C C:\
-          tar -xvf C:\lld.src.tar.xz -C C:\
+          tar -xvf C:\llvm-19.1.7.src.tar.xz -C C:\
+          tar -xvf C:\lld-19.1.7.src.tar.xz -C C:\
           mkdir C:\llvm-19.1.7.src\build-release ; cd C:\llvm-19.1.7\build-release
           cmake.exe .. -G Ninja -DCMAKE_INSTALL_PREFIX=C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt -DCMAKE_PREFIX_PATH=C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt -DLLVM_ENABLE_ZLIB=OFF -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_LIBXML2=OFF -DLLVM_USE_CRT_RELEASE=MT
           ninja ; ninja install
