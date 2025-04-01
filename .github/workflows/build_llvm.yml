@@ -1,0 +1,43 @@
+name: llvm Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - zig
+jobs:
+  llvm-build:
+    name: llvm Build
+    runs-on: windows-2022
+    steps:
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: amd64
+      - name: Prepare
+        run: |
+          cd C:\
+          curl.exe https://github.com/llvm/llvm-project/releases/download/llvmorg-19.1.7/clang-19.1.7.src.tar.xz -o clang-19.1.7.src.tar.xz
+          curl.exe https://github.com/llvm/llvm-project/releases/download/llvmorg-19.1.7/llvm-19.1.7.src.tar.xz -o llvm-19.1.7.src.tar.xz
+          # curl.exe https://github.com/llvm/llvm-project/releases/download/llvmorg-19.1.7/lld-19.1.7.src.tar.xz -o lld-19.1.7.src.tar.xz
+          tar -xvf C:\clang-19.1.7.src.tar.xz -C C:\clang
+          tar -xvf C:\llvm-19.1.7.src.tar.xz -C C:\llvm
+          # tar -xvf C:\lld-19.1.7.src.tar.xz -C C:\lld
+          mkdir C:\llvm\build-release ; cd C:\llvm\build-release
+          cmake.exe .. -G Ninja -DCMAKE_INSTALL_PREFIX=C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt -DCMAKE_PREFIX_PATH=C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt -DLLVM_ENABLE_ZLIB=OFF -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_LIBXML2=OFF -DLLVM_USE_CRT_RELEASE=MT
+          ninja ; ninja install
+          mkdir C:\clang\build-release ; cd C:\clang\build-release
+          cmake.exe .. -G Ninja -DCMAKE_INSTALL_PREFIX=C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt -DCMAKE_PREFIX_PATH=C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt -DCMAKE_BUILD_TYPE=Release -DLLVM_USE_CRT_RELEASE=MT
+          ninja ; ninja install
+      - name: Pack llvm
+        run: |
+          7z a C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt.7z C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: llvm
+          path: C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt.7z
+      - name: Update llvm Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: zig-build
+          files: |
+            C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt.7z
