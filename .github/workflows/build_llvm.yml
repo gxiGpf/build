@@ -15,19 +15,19 @@ jobs:
           arch: amd64
       - name: Prepare
         run: |
-          $webClient = New-Object System.Net.WebClient
-          cd C:\
-          (new-object System.Net.WebClient).DownloadFile('https://github.com/llvm/llvm-project/releases/download/llvmorg-19.1.7/clang-19.1.7.src.tar.xz', 'clang.src.tar.xz')
-          $webClient.DownloadFile('https://github.com/llvm/llvm-project/releases/download/llvmorg-19.1.7/llvm-19.1.7.src.tar.xz','llvm.src.tar.xz')
-          $webClient.DownloadFile('https://github.com/llvm/llvm-project/releases/download/llvmorg-19.1.7/lld-19.1.7.src.tar.xz','lld.src.tar.xz')
+          (new-object System.Net.WebClient).DownloadFile('https://github.com/llvm/llvm-project/releases/download/llvmorg-19.1.7/clang-19.1.7.src.tar.xz', 'C:\clang.src.tar.xz')
+          (new-object System.Net.WebClient).DownloadFile('https://github.com/llvm/llvm-project/releases/download/llvmorg-19.1.7/llvm-19.1.7.src.tar.xz','C:\llvm.src.tar.xz')
+          (new-object System.Net.WebClient).DownloadFile('https://github.com/llvm/llvm-project/releases/download/llvmorg-19.1.7/lld-19.1.7.src.tar.xz','C:\lld.src.tar.xz')
           tar -xvf C:\clang.src.tar.xz -C C:\
-          ls
           tar -xvf C:\llvm.src.tar.xz -C C:\
           tar -xvf C:\lld.src.tar.xz -C C:\
-          mkdir C:\llvm\build-release ; cd C:\llvm\build-release
+          mkdir C:\llvm-19.1.7\build-release ; cd C:\llvm-19.1.7\build-release
           cmake.exe .. -G Ninja -DCMAKE_INSTALL_PREFIX=C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt -DCMAKE_PREFIX_PATH=C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt -DLLVM_ENABLE_ZLIB=OFF -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_LIBXML2=OFF -DLLVM_USE_CRT_RELEASE=MT
           ninja ; ninja install
-          mkdir C:\clang\build-release ; cd C:\clang\build-release
+          mkdir C:\lld-19.1.7\build-release ; cd C:\lld-19.1.7\build-release
+          cmake.exe .. -G Ninja -DCMAKE_INSTALL_PREFIX=C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt -DCMAKE_PREFIX_PATH=C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt -DCMAKE_BUILD_TYPE=Release -DLLVM_USE_CRT_RELEASE=MT
+          ninja ; ninja install
+          mkdir C:\clang-19.1.7\build-release ; cd C:\clang-19.1.7\build-release
           cmake.exe .. -G Ninja -DCMAKE_INSTALL_PREFIX=C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt -DCMAKE_PREFIX_PATH=C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt -DCMAKE_BUILD_TYPE=Release -DLLVM_USE_CRT_RELEASE=MT
           ninja ; ninja install
       - name: Pack llvm
