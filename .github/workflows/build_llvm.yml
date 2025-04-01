@@ -31,13 +31,13 @@ jobs:
           7z x C:\lld-19.1.7.src.tar.xz -oC:\
           7z x C:\lld-19.1.7.src.tar -oC:\
           rm C:\lld-19.1.7.src.tar.xz ; rm C:\lld-19.1.7.src.tar
-          mkdir C:\llvm-19.1.7.src\build-release ; cd C:\llvm-19.1.7\build-release
+          mkdir C:\llvm-19.1.7.src\build-release ; cd C:\llvm-19.1.7.src\build-release
           cmake.exe .. -G Ninja -DCMAKE_INSTALL_PREFIX=C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt -DCMAKE_PREFIX_PATH=C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt -DLLVM_ENABLE_ZLIB=OFF -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_LIBXML2=OFF -DLLVM_USE_CRT_RELEASE=MT
           ninja ; ninja install
-          mkdir C:\lld-19.1.7.src\build-release ; cd C:\lld-19.1.7\build-release
+          mkdir C:\lld-19.1.7.src\build-release ; cd C:\lld-19.1.7.src\build-release
           cmake.exe .. -G Ninja -DCMAKE_INSTALL_PREFIX=C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt -DCMAKE_PREFIX_PATH=C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt -DCMAKE_BUILD_TYPE=Release -DLLVM_USE_CRT_RELEASE=MT
           ninja ; ninja install
-          mkdir C:\clang-19.1.7.src\build-release ; cd C:\clang-19.1.7\build-release
+          mkdir C:\clang-19.1.7.src\build-release ; cd C:\clang-19.1.7.src\build-release
           cmake.exe .. -G Ninja -DCMAKE_INSTALL_PREFIX=C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt -DCMAKE_PREFIX_PATH=C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt -DCMAKE_BUILD_TYPE=Release -DLLVM_USE_CRT_RELEASE=MT
           ninja ; ninja install
       - name: Pack llvm
