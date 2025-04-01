@@ -17,7 +17,7 @@ jobs:
         run: |
           $webClient = New-Object System.Net.WebClient
           cd C:\
-          $webClient.DownloadFile('https://github.com/llvm/llvm-project/releases/download/llvmorg-19.1.7/clang-19.1.7.src.tar.xz','clang.src.tar.xz')
+          (new-object System.Net.WebClient).DownloadFile('https://github.com/llvm/llvm-project/releases/download/llvmorg-19.1.7/clang-19.1.7.src.tar.xz', 'clang.src.tar.xz')
           $webClient.DownloadFile('https://github.com/llvm/llvm-project/releases/download/llvmorg-19.1.7/llvm-19.1.7.src.tar.xz','llvm.src.tar.xz')
           $webClient.DownloadFile('https://github.com/llvm/llvm-project/releases/download/llvmorg-19.1.7/lld-19.1.7.src.tar.xz','lld.src.tar.xz')
           tar -xvf C:\clang.src.tar.xz -C C:\
