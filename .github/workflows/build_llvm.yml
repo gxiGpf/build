@@ -15,11 +15,11 @@ jobs:
           arch: amd64
       - name: Prepare
         run: |
-          scoop install main/wget2
+          choco install wget
           cd C:\
-          wget2 https://github.com/gxiGpf/build/releases/download/src/clang-19.1.7.src.tar.xz
-          wget2 https://github.com/gxiGpf/build/releases/download/src/llvm-19.1.7.src.tar.xz
-          wget2 https://github.com/gxiGpf/build/releases/download/src/lld-19.1.7.src.tar.xz
+          wget https://github.com/gxiGpf/build/releases/download/src/clang-19.1.7.src.tar.xz
+          wget https://github.com/gxiGpf/build/releases/download/src/llvm-19.1.7.src.tar.xz
+          wget https://github.com/gxiGpf/build/releases/download/src/lld-19.1.7.src.tar.xz
           # (new-object System.Net.WebClient).DownloadFile('https://github.com/gxiGpf/build/releases/download/src/clang-19.1.7.src.tar.xz', 'C:\clang.src.tar.xz')
           # (new-object System.Net.WebClient).DownloadFile('https://github.com/gxiGpf/build/releases/download/src/llvm-19.1.7.src.tar.xz','C:\llvm.src.tar.xz')
           # (new-object System.Net.WebClient).DownloadFile('https://github.com/gxiGpf/build/releases/download/src/lld-19.1.7.src.tar.xz','C:\lld.src.tar.xz')
