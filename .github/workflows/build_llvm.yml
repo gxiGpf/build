@@ -99,10 +99,10 @@ jobs:
           mkdir build ; cd build
           cmake .. -GNinja -DCMAKE_PREFIX_PATH="C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt;C:\vcpkg\installed\x64-windows-static\lib" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=C:\zig-release -DZIG_STATIC=ON -DZIG_USE_LLVM_CONFIG=OFF 
           ninja
-          ninja install
+          # ninja install
       - name: Pack
         run: |
-          7z a C:\zig-custom-master.7z C:\zig-release
+          7z a C:\zig-custom-master.7z C:\zig\build\stage3
       - uses: actions/upload-artifact@v4
         with:
           name: zig
