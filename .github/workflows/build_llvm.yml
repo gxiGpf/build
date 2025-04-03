@@ -79,19 +79,20 @@ jobs:
         run: |
           cd C:\ ; git clone --depth 1 https://github.com/ziglang/zig ; cd zig
           gh pr checkout 22012
-          mkdir build ; cd build
-          cmake .. -GNinja -DCMAKE_PREFIX_PATH="C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=C:\zig-release
-          ninja
-      - name: Pack
-        run: |
-          7z a C:\zig-custom-master.7z C:\zig-release
-      - uses: actions/upload-artifact@v4
-        with:
-          name: zig
-          path: C:\zig-custom-master.7z
+          git format-patch -1 --stdout > C:\Support-generating-JSON-compilation-database.patch
+          # mkdir build ; cd build
+          # cmake .. -GNinja -DCMAKE_PREFIX_PATH="C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=C:\zig-release
+          # ninja
+      # - name: Pack
+      #   run: |
+      #     7z a C:\zig-custom-master.7z C:\zig-release
+      # - uses: actions/upload-artifact@v4
+      #   with:
+      #     name: zig
+      #     path: C:\zig-custom-master.7z
       - name: Update llvm Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: zig-build
           files: |
-            C:\zig-custom-master.7z
+            C:\Support-generating-JSON-compilation-database.patch
