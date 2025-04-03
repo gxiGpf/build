@@ -96,7 +96,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # vcpkg install zlib:x64-windows-static zstd:x64-windows-static 
+          vcpkg install zlib:x64-windows-static zstd:x64-windows-static
           cd C:\ ; git clone --depth 1 https://github.com/ziglang/zig 
           wget -q https://raw.githubusercontent.com/gxiGpf/build/refs/heads/zig/0.patch ; cd zig
           git apply ..\0.patch
