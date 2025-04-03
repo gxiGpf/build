@@ -71,6 +71,9 @@ jobs:
         run: |
           cd C:\ ; git clone --depth 1 https://github.com/ziglang/zig ; cd zig
           gh pr checkout 22012
+          $currentBranch = git branch --show-current
+          git checkout master
+          git merge $currentBranch
           git format-patch -1 --stdout > C:\master-Support-generating-JSON-compilation-database.patch
       - name: Update zig Release
         uses: softprops/action-gh-release@v2
