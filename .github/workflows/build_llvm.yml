@@ -97,16 +97,16 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # vcpkg install zlib:x64-windows-static zstd:x64-windows-static 
-          cd C:\ ; git clone --depth 1 https://github.com/ziglang/zig ; cd zig
-          wget -q https://raw.githubusercontent.com/gxiGpf/build/refs/heads/zig/0.patch
-          git apply 0.patch
+          cd C:\ ; git clone --depth 1 https://github.com/ziglang/zig 
+          wget -q https://raw.githubusercontent.com/gxiGpf/build/refs/heads/zig/0.patch ; cd zig
+          git apply ..\0.patch
           mkdir build ; cd build
-          cmake .. -Thost=x64 -A x64 -DCMAKE_PREFIX_PATH=C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=C:\zig-release
-          msbuild -p:Configuration=Release INSTALL.vcxproj
-          ls
-          # cmake .. -GNinja -DCMAKE_PREFIX_PATH="C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt" -DCMAKE_BUILD_TYPE=Release
-          # ninja
+          # cmake .. -Thost=x64 -A x64 -DCMAKE_PREFIX_PATH=C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=C:\zig-release
+          # msbuild -p:Configuration=Release INSTALL.vcxproj
           # ls
+          cmake .. -GNinja -DCMAKE_PREFIX_PATH="C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=C:\zig-release
+          ninja
+          ls
           # cmake .. -GNinja -DCMAKE_PREFIX_PATH="C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt;C:\vcpkg\installed\x64-windows-static\lib" -DCMAKE_C_COMPILER="C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt\bin\clang.exe" -DCMAKE_CXX_COMPILER="C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt\bin\clang++.exe" -DZIG_STATIC=ON -DZIG_USE_LLVM_CONFIG=OFF -DCMAKE_INSTALL_PREFIX=C:\zig-release
           # ninja
           # ninja install
