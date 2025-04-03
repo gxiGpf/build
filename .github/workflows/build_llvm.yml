@@ -107,7 +107,7 @@ jobs:
         with:
           name: zig
           path: C:\zig-custom-master.7z
-      - name: Update llvm Release
+      - name: Update Zig Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: zig-build
