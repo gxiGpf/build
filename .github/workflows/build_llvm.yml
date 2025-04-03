@@ -92,10 +92,11 @@ jobs:
           choco install wget
           cd C:\ ; wget -q https://github.com/gxiGpf/build/releases/download/zig-build/llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt.7z
           7z x C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt.7z -oC:\ ; rm C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt.7z
-      - name: Prepare
+      - name: Build
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          vcpkg install zlib:x64-windows-static zstd:x64-windows-static 
           cd C:\ ; git clone --depth 1 https://github.com/ziglang/zig ; cd zig
           wget -q https://github.com/gxiGpf/build/releases/download/zig-build/Support-generating-JSON-compilation-database.mini.patch
           git apply Support-generating-JSON-compilation-database.mini.patch
@@ -106,7 +107,7 @@ jobs:
           # cmake .. -GNinja -DCMAKE_PREFIX_PATH="C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt" -DCMAKE_BUILD_TYPE=Release
           # ninja
           # ls
-          cmake .. -GNinja -DCMAKE_PREFIX_PATH="C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt" -DCMAKE_C_COMPILER="C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt\bin\clang.exe" -DCMAKE_CXX_COMPILER="C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt\bin\clang++.exe" -DCMAKE_AR="C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt\bin\llvm-ar.exe" -DZIG_AR_WORKAROUND=ON -DZIG_STATIC=ON -DZIG_USE_LLVM_CONFIG=OFF -DCMAKE_INSTALL_PREFIX=C:\zig-release
+          cmake .. -GNinja -DCMAKE_PREFIX_PATH="C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt;C:\vcpkg\installed\x64-windows-static\lib" -DCMAKE_C_COMPILER="C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt\bin\clang.exe" -DCMAKE_CXX_COMPILER="C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt\bin\clang++.exe" -DCMAKE_AR="C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt\bin\llvm-ar.exe" -DZIG_AR_WORKAROUND=ON -DZIG_STATIC=ON -DZIG_USE_LLVM_CONFIG=OFF -DCMAKE_INSTALL_PREFIX=C:\zig-release
           ninja
           ninja install
       # - name: Pack
