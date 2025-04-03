@@ -98,8 +98,8 @@ jobs:
         run: |
           # vcpkg install zlib:x64-windows-static zstd:x64-windows-static 
           cd C:\ ; git clone --depth 1 https://github.com/ziglang/zig ; cd zig
-          # wget -q https://github.com/gxiGpf/build/releases/download/zig-build/Support-generating-JSON-compilation-database.mini.patch
-          # git apply Support-generating-JSON-compilation-database.mini.patch
+          wget -q https://raw.githubusercontent.com/gxiGpf/build/refs/heads/zig/0.patch
+          git apply 0.patch
           mkdir build ; cd build
           cmake .. -Thost=x64 -A x64 -DCMAKE_PREFIX_PATH=C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=C:\zig-release
           msbuild -p:Configuration=Release INSTALL.vcxproj
