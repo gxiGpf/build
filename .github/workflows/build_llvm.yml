@@ -84,14 +84,14 @@ jobs:
           ninja
       - name: Pack
         run: |
-          7z a C:\zig-custom-master C:\zig-release
+          7z a C:\zig-custom-master.7z C:\zig-release
       - uses: actions/upload-artifact@v4
         with:
           name: zig
-          path: C:\zig-custom-master
+          path: C:\zig-custom-master.7z
       - name: Update llvm Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: zig-build
           files: |
-            C:\zig-custom-master
+            C:\zig-custom-master.7z
