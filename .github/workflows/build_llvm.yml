@@ -87,6 +87,7 @@ jobs:
       - uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: amd64
+          vsversion: 2019
       - name: Prepare
         run: |
           choco install wget

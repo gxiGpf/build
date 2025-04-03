@@ -1,4 +1,3 @@
-diff --git a/lib/compiler/build_runner.zig b/lib/compiler/build_runner.zig
 index 6c68911e..2de7bc97 100644
 --- a/lib/compiler/build_runner.zig
 +++ b/lib/compiler/build_runner.zig
@@ -42,7 +41,6 @@ index 6c68911e..2de7bc97 100644
          \\  -fdarling,  -fno-darling     Integration with system-installed Darling to
          \\                               execute macOS programs on Linux hosts
          \\                               (default: no)
-diff --git a/lib/std/Build.zig b/lib/std/Build.zig
 index 4afdcd2b..302d7a58 100644
 --- a/lib/std/Build.zig
 +++ b/lib/std/Build.zig
@@ -226,7 +224,6 @@ index 4afdcd2b..302d7a58 100644
  /// This function is intended to be called by lib/build_runner.zig, not a build.zig file.
  pub fn resolveInstallPrefix(b: *Build, install_prefix: ?[]const u8, dir_list: DirList) void {
      if (b.dest_dir) |dest_dir| {
-diff --git a/lib/std/Build/Step/Compile.zig b/lib/std/Build/Step/Compile.zig
 index cbcb7130..a4aa80a6 100644
 --- a/lib/std/Build/Step/Compile.zig
 +++ b/lib/std/Build/Step/Compile.zig
