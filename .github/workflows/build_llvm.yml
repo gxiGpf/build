@@ -72,5 +72,5 @@ jobs:
         run: |
           choco install wget
           cd C:\ ; wget https://github.com/gxiGpf/build/releases/download/zig-build/llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt.7z
-          7z x https://github.com/gxiGpf/build/releases/download/zig-build/llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt.7z -oC:\
+          7z x C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt.7z -oC:\
           ls
