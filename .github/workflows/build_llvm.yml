@@ -71,6 +71,25 @@ jobs:
       - name: Prepare
         run: |
           choco install wget
-          cd C:\ ; wget https://github.com/gxiGpf/build/releases/download/zig-build/llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt.7z
-          7z x C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt.7z -oC:\
-          ls
+          cd C:\ ; wget -q https://github.com/gxiGpf/build/releases/download/zig-build/llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt.7z
+          7z x C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt.7z -oC:\ ; rm C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt.7z
+      - name: Prepare
+        run: |
+          cd C:\ ; git clone --depth 1 https://github.com/ziglang/zig
+          gh pr checkout 22012
+          mkdir build ; cd build
+          cmake .. -GNinja -DCMAKE_PREFIX_PATH="C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=C:\zig-release
+          ninja
+      - name: Pack
+        run: |
+          7z a C:\zig-custom-master C:\zig-release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: zig
+          path: C:\zig-custom-master
+      - name: Update llvm Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: zig-build
+          files: |
+            C:\zig-custom-master
