@@ -69,18 +69,17 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          choco install wget
           cd C:\ ; git clone --depth 1 https://github.com/ziglang/zig ; cd zig
-          gh pr checkout 22012
-          $currentBranch = git branch --show-current
-          git checkout master 
-          git merge $currentBranch --allow-unrelated-histories
-          git format-patch -1 --stdout > C:\master-Support-generating-JSON-compilation-database.patch
+          wget -q https://github.com/gxiGpf/build/releases/download/zig-build/Support-generating-JSON-compilation-database.patch
+          git apply Support-generating-JSON-compilation-database.patch
+          7z a Support-generating-JSON-compilation-database-files.7z C:\zig\lib\std\Build.zig C:\zig\lib\std\Build\Step\Compile.zig
       - name: Update zig Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: zig-build
           files: |
-            C:\master-Support-generating-JSON-compilation-database.patch
+            Support-generating-JSON-compilation-database-files.7z
   # zig-build:
   #   name: zig Build
   #   runs-on: windows-2022
