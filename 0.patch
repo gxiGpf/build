@@ -266,3 +266,5 @@ index cbcb7130..a4aa80a6 100644
                              for (c_source_files.files) |file| {
                                  try zig_args.append(b.pathJoin(&.{ root_path, file }));
                              }
+-- 
+2.49.0
