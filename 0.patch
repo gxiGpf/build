@@ -1,9 +1,3 @@
----
- lib/compiler/build_runner.zig  |  12 +++
- lib/std/Build.zig              | 138 +++++++++++++++++++++++++++++++++
- lib/std/Build/Step/Compile.zig |  22 ++++++
- 3 files changed, 172 insertions(+)
-
 diff --git a/lib/compiler/build_runner.zig b/lib/compiler/build_runner.zig
 index 6c68911e..2de7bc97 100644
 --- a/lib/compiler/build_runner.zig
