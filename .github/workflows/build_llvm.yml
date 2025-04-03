@@ -82,12 +82,11 @@ jobs:
   #           C:\Support-generating-JSON-compilation-database-files.7z
   zig-build:
     name: zig Build
-    runs-on: windows-2022
+    runs-on: windows-2019
     steps:
       - uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: amd64
-          vsversion: 2019
       - name: Prepare
         run: |
           choco install wget
