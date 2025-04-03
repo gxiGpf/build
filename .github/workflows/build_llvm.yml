@@ -74,6 +74,8 @@ jobs:
           cd C:\ ; wget -q https://github.com/gxiGpf/build/releases/download/zig-build/llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt.7z
           7z x C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt.7z -oC:\ ; rm C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt.7z
       - name: Prepare
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cd C:\ ; git clone --depth 1 https://github.com/ziglang/zig
           gh pr checkout 22012
