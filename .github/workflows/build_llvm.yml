@@ -97,11 +97,11 @@ jobs:
           wget -q https://raw.githubusercontent.com/gxiGpf/build/refs/heads/zig/0.patch ; cd zig
           git apply ..\0.patch
           mkdir build ; cd build
-          # cmake .. -GNinja -DCMAKE_PREFIX_PATH="C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt;C:\vcpkg\installed\x64-windows-static\lib" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=C:\zig-release -DZIG_STATIC=ON -DZIG_USE_LLVM_CONFIG=OFF 
+          cmake .. -GNinja -DCMAKE_PREFIX_PATH="C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt;C:\vcpkg\installed\x64-windows-static\lib" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=C:\zig-release -DZIG_STATIC=ON -DZIG_USE_LLVM_CONFIG=OFF -DZIG_TARGET_TRIPLE="x86_64-windows-msvc"
           # ninja
-          # ninja instal
-          cmake .. -Thost=x64 -G "Visual Studio 16 2019" -A x64 -DCMAKE_PREFIX_PATH="C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt;C:\vcpkg\installed\x64-windows-static\lib" -DCMAKE_BUILD_TYPE=Release
-          msbuild -p:Configuration=Release INSTALL.vcxproj
+          ninja instal
+          # cmake .. -Thost=x64 -G "Visual Studio 16 2019" -A x64 -DCMAKE_PREFIX_PATH="C:\llvm+clang+lld-19.1.7-x86_64-windows-msvc-release-mt;C:\vcpkg\installed\x64-windows-static\lib" -DCMAKE_BUILD_TYPE=Release
+          # msbuild -p:Configuration=Release INSTALL.vcxproj
       - name: Pack
         run: |
           7z a C:\zig-custom-master.7z C:\zig\build\stage3
