@@ -77,8 +77,8 @@ jobs:
         run: |
           choco install wget
           cd C:\ ; wget -q https://ziglang.org/deps/zig+llvm+lld+clang-x86_64-windows-gnu-0.15.0-dev.233+7c85dc460.zip
-          7z x https://ziglang.org/deps/zig+llvm+lld+clang-x86_64-windows-gnu-0.15.0-dev.233+7c85dc460.zip -oC:\ ; rm C:\https://ziglang.org/deps/zig+llvm+lld+clang-x86_64-windows-gnu-0.15.0-dev.233+7c85dc460.zip
-          mv C:\https://ziglang.org/deps/zig+llvm+lld+clang-x86_64-windows-gnu-0.15.0-dev.233+7c85dc460 C:\zig-bootstrap-release
+          7z x zig+llvm+lld+clang-x86_64-windows-gnu-0.15.0-dev.233+7c85dc460.zip -oC:\ ; rm zig+llvm+lld+clang-x86_64-windows-gnu-0.15.0-dev.233+7c85dc460.zip
+          mv zig+llvm+lld+clang-x86_64-windows-gnu-0.15.0-dev.233+7c85dc460.zip zig-bootstrap-release
           cd C:\ ; git clone --depth 1 https://github.com/ziglang/zig 
           wget -q https://raw.githubusercontent.com/gxiGpf/build/refs/heads/zig/0.patch ; cd zig
           git apply ..\0.patch
