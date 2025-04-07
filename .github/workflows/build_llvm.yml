@@ -83,7 +83,7 @@ jobs:
           wget -q https://raw.githubusercontent.com/gxiGpf/build/refs/heads/zig/0.patch ; cd zig
           git apply ..\0.patch
           mkdir build ; cd build
-          cmake .. -GNinja -DCMAKE_PREFIX_PATH="C:\zig-bootstrap-release" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=C:\zig-release -DZIG_STATIC=ON -DZIG_NO_LIB=ON -DZIG_AR_WORKAROUND=ON `
+          cmake .. -GNinja -DCMAKE_PREFIX_PATH="C:\zig-bootstrap-release" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=C:\zig-release -DZIG_STATIC=ON -DZIG_AR_WORKAROUND=ON `
             -DZIG_TARGET_TRIPLE="x86_64-windows-gnu" -DZIG_TARGET_MCPU="skylake" `
             -DCMAKE_C_COMPILER="C:\zig-bootstrap-release\bin\zig.exe;cc;-target;x86_64-windows-gnu;-mcpu=skylake" `
             -DCMAKE_CXX_COMPILER="C:\zig-bootstrap-release\bin\zig.exe;c++;-target;x86_64-windows-gnu;-mcpu=skylake" `
@@ -91,7 +91,7 @@ jobs:
           ninja install
       - name: Pack
         run: |
-          7z a C:\zig-custom-x86_64-windows-gnu-master-release.7z C:\zig\build\stage3
+          7z a C:\zig-custom-x86_64-windows-gnu-master-release.7z C:\zig-release
       - name: Update Zig Release
         uses: softprops/action-gh-release@v2
         with:
