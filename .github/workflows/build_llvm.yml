@@ -91,7 +91,7 @@ jobs:
           ninja install
       - name: Pack
         run: |
-          7z a C:\zig-custom-x86_64-windows-gnu-master-release.7z C:\zig-release
+          7z a C:\zig-custom-x86_64-windows-gnu-master-release.7z C:\zig\build\stage3
       - name: Update Zig Release
         uses: softprops/action-gh-release@v2
         with:
