@@ -76,7 +76,7 @@ jobs:
       - name: Build
         run: |
           choco install wget
-          cd C:\ ; wget -q https://ziglang.org/deps/zig+llvm+lld+clang-x86_64-windows-gnu-0.15.0-dev.233+7c85dc460.zip
+          cd C:\ ; wget -q https://github.com/gxiGpf/build/releases/download/untagged-0c1d299dc63d27aeff56/zig+llvm+lld+clang-x86_64-windows-gnu-0.15.0-dev.233+7c85dc460.zip
           7z x zig+llvm+lld+clang-x86_64-windows-gnu-0.15.0-dev.233+7c85dc460.zip -oC:\ ; rm zig+llvm+lld+clang-x86_64-windows-gnu-0.15.0-dev.233+7c85dc460.zip
           mv zig+llvm+lld+clang-x86_64-windows-gnu-0.15.0-dev.233+7c85dc460 zig-bootstrap-release
           cd C:\ ; git clone --depth 1 https://github.com/ziglang/zig 
@@ -89,6 +89,9 @@ jobs:
             -DCMAKE_CXX_COMPILER="C:\zig-bootstrap-release\bin\zig.exe;c++;-target;x86_64-windows-gnu;-mcpu=skylake" `
             -DCMAKE_AR="C:\zig-bootstrap-release\bin\zig.exe"
           ninja install
+          cd C:\zig-release\bin
+          wget -q https://raw.githubusercontent.com/gxiGpf/build/refs/heads/zig/bin/zig-c++.cmd
+          wget -q https://raw.githubusercontent.com/gxiGpf/build/refs/heads/zig/bin/zig-cc.cmd
       - name: Pack
         run: |
           7z a C:\zig-custom-x86_64-windows-gnu-master-release.7z C:\zig-release

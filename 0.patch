@@ -135,8 +135,9 @@ index 4afdcd2b..302d7a58 100644
 +        try writer.writeAll(",");
 +
 +        try writer.writeAll("\"arguments\":[");
-+        try writer.writeAll("\"zig\",");
-+        try writer.writeAll("\"cc\",");
++        //try writer.writeAll("\"zig\",");
++        //try writer.writeAll("\"cc\",");
++        try writer.writeAll("\"zig-cc\",");
 +
 +        for (entry.flags) |flag| {
 +            try std.json.encodeJsonString(flag, .{}, writer);
@@ -196,13 +197,13 @@ index 4afdcd2b..302d7a58 100644
 +                try temp.appendSlice(triple);
 +                try std.json.encodeJsonString(temp.items, .{}, writer);
 +                try writer.writeAll(",");
-+
 +                temp.clearRetainingCapacity();
 +
 +                try temp.appendSlice("-mcpu=");
 +                try temp.appendSlice(cpu);
 +                try std.json.encodeJsonString(temp.items, .{}, writer);
 +                try writer.writeAll(",");
++                temp.clearRetainingCapacity();
 +            }
 +        }
 +
