@@ -1,29 +1,29 @@
-# name: llvm Build
+name: Zig bootstrap Build
 
-# on:
-#   workflow_dispatch:
-#   push:
-#     branches:
-#       - zig
-# jobs:
-#   zig-bootstrap-windows-build:
-#     name: zig Build
-#     runs-on: windows-2019
-#     steps:
-#       - uses: ilammy/msvc-dev-cmd@v1
-#         with:
-#           arch: amd64
-#       - name: Build
-#         run: |
-#           cd C:\ ; git clone --depth 1 https://github.com/ziglang/zig-bootstrap ; cd zig-bootstrap
-#           $ENV:CMAKE_GENERATOR=Ninja
-#            .\build.bat x86_64-windows-gnu
-#       - name: Pack
-#         run: |
-#           7z a C:\zig-bootstrap-x86_64-windows-gnu.7z C:\zig-bootstrap\out
-#       - name: Update Zig Release
-#         uses: softprops/action-gh-release@v2
-#         with:
-#           tag_name: zig-build
-#           files: |
-#             C:\zig-bootstrap-x86_64-windows-gnu.7z
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - zig
+jobs:
+  zig-bootstrap-windows-build:
+    name: zig Build
+    runs-on: windows-2019
+    steps:
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: amd64
+      - name: Build
+        run: |
+          cd C:\ ; git clone --depth 1 https://github.com/ziglang/zig-bootstrap ; cd zig-bootstrap
+          $ENV:CMAKE_GENERATOR=Ninja
+           .\build.bat
+      - name: Pack
+        run: |
+          7z a C:\zig-bootstrap-x86_64-windows-gnu.7z C:\zig-bootstrap\out
+      - name: Update Zig Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: zig-build
+          files: |
+            C:\zig-bootstrap-x86_64-windows-gnu.7z
