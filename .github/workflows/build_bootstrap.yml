@@ -17,7 +17,8 @@ jobs:
         run: |
           cd C:\ ; git clone --depth 1 https://github.com/ziglang/zig-bootstrap ; cd zig-bootstrap
           $ENV:CMAKE_GENERATOR=Ninja
-           .\build.bat x86_64-windows-gnu skylake
+          .\build.bat
+          # .\build.bat x86_64-windows-gnu skylake
       - name: Pack
         run: |
           7z a C:\zig-bootstrap-x86_64-windows-gnu.7z C:\zig-bootstrap\out
