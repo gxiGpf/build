@@ -1,0 +1,34 @@
+name: binwalk Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - binwalk
+jobs:
+  binwalk-windows-build:
+    name: binwalk Build
+    runs-on: windows-2022
+    steps:
+      - name: Build Pack binwalk
+        run: |
+          cd C:\ ; git clone --depth=1 https://github.com/ReFirmLabs/binwalk
+          rustup update
+          cd binwalk
+          cargo build --release
+          ls -al
+      # - uses: actions/upload-artifact@v4
+      #   with:
+      #     name: binwalk_master_ReleaseSafe
+      #     path: C:\binwalk_master_ReleaseSafe.7z
+      # - uses: actions/upload-artifact@v4
+      #   with:
+      #     name: binwalk_master_ReleaseFast
+      #     path: C:\binwalk_master_ReleaseFast.7z
+      # - name: Update binwalk Release
+      #   uses: softprops/action-gh-release@v2
+      #   with:
+      #     tag_name: binwalk-build
+      #     files: |
+      #       C:\binwalk_master_ReleaseSafe.7z
+      #       C:\binwalk_master_ReleaseFast.7z
