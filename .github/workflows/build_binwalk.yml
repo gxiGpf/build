@@ -16,7 +16,6 @@ jobs:
           rustup update
           cd binwalk
           cargo build --release
-          ls -al
       # - uses: actions/upload-artifact@v4
       #   with:
       #     name: binwalk_master_ReleaseSafe
@@ -25,10 +24,9 @@ jobs:
       #   with:
       #     name: binwalk_master_ReleaseFast
       #     path: C:\binwalk_master_ReleaseFast.7z
-      # - name: Update binwalk Release
-      #   uses: softprops/action-gh-release@v2
-      #   with:
-      #     tag_name: binwalk-build
-      #     files: |
-      #       C:\binwalk_master_ReleaseSafe.7z
-      #       C:\binwalk_master_ReleaseFast.7z
+      - name: Update binwalk Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: binwalk-build
+          files: |
+            C:\binwalk\target\release\binwalk.exe
