@@ -18,6 +18,26 @@ set JOBS_ARG=
 
 set ZIG=C:\zig-bootstrap-host\bin\zig.exe
 
+mkdir "%ROOTDIR%%OUTDIR%\build-zlib-%TARGET%-%MCPU%"
+cd "%ROOTDIR%%OUTDIR%\build-zlib-%TARGET%-%MCPU%"
+cmake "%ROOTDIR%/zlib" ^
+  -G "Ninja" ^
+  -DCMAKE_INSTALL_PREFIX="%ROOTDIR_CMAKE%%OUTDIR%/%TARGET%-%MCPU%" ^
+  -DCMAKE_PREFIX_PATH="%ROOTDIR_CMAKE%%OUTDIR%/%TARGET%-%MCPU%" ^
+  -DCMAKE_BUILD_TYPE=Release ^
+  -DCMAKE_CROSSCOMPILING=True ^
+  -DCMAKE_SYSTEM_NAME="%TARGET_OS_CMAKE%" ^
+  -DCMAKE_C_COMPILER="%ZIG%;cc;-fno-sanitize=all;-fno-stack-protector;-s;-target;%TARGET%;-mcpu=%MCPU%" ^
+  -DCMAKE_CXX_COMPILER="%ZIG%;c++;-fno-sanitize=all;-fno-stack-protector;-s;-target;%TARGET%;-mcpu=%MCPU%" ^
+  -DCMAKE_ASM_COMPILER="%ZIG%;cc;-fno-sanitize=all;-fno-stack-protector;-s;-target;%TARGET%;-mcpu=%MCPU%" ^
+  -DCMAKE_RC_COMPILER="C:/zig-bootstrap-host/bin/llvm-rc.exe" ^
+  -DCMAKE_AR="C:/zig-bootstrap-host/bin/llvm-ar.exe" ^
+  -DCMAKE_RANLIB="C:/zig-bootstrap-host/bin/llvm-ranlib.exe" ^
+  -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded ^
+  -DCMAKE_POLICY_DEFAULT_CMP0091=NEW
+cmake --build . %JOBS_ARG% --target install
+if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
+
 rem Cross compile zstd for the target
 mkdir "%ROOTDIR%%OUTDIR%\%TARGET%-%MCPU%\lib"
 copy "%ROOTDIR%\zstd\lib\zstd.h" "%ROOTDIR%%OUTDIR%\%TARGET%-%MCPU%\include\zstd.h"
