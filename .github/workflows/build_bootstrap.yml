@@ -43,7 +43,7 @@ jobs:
           7z x zig-bootstrap-x86_64-windows-msvc-host.7z -oC:\zig-bootstrap-host ; rm zig-bootstrap-x86_64-windows-msvc-host.7z
           git clone --depth 1 https://github.com/ziglang/zig-bootstrap ; cd zig-bootstrap
           wget https://raw.githubusercontent.com/gxiGpf/build/refs/heads/zig/custom-bootstrap/build-x86_64-windows-gnu.bat
-          .\build-x86_64-windows-msvc.bat
+          .\build-x86_64-windows-gnu.bat
       - name: Pack
         run: |
           7z a -r C:\zig-bootstrap-x86_64-windows-gnu-skylake.7z C:\zig-bootstrap\out\x86_64-windows-gnu-skylake\*
