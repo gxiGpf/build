@@ -22,7 +22,7 @@ jobs:
           .\build-x86_64-windows-msvc.bat
       - name: Pack
         run: |
-          7z a C:\zig-bootstrap-x86_64-windows-msvc-host.7z C:\zig-bootstrap\out\host
+          7z a -r C:\zig-bootstrap-x86_64-windows-msvc-host.7z C:\zig-bootstrap\out\host\*
       - name: Update Zig Bootstrap Release
         uses: softprops/action-gh-release@v2
         with:
