@@ -1,0 +1,53 @@
+name: Zig bootstrap Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - zig
+jobs:
+  zig-bootstrap-x86_64-windows-msvc-host-build:
+    name: Zig Bootstrap x86_64-windows-msvc Host Build
+    runs-on: windows-2019
+    steps:
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: amd64
+      - name: Build
+        run: |
+          choco install wget
+          cd C:\ ; git clone --depth 1 https://github.com/ziglang/zig-bootstrap ; cd zig-bootstrap
+          $ENV:CMAKE_GENERATOR=Ninja
+          wget https://raw.githubusercontent.com/gxiGpf/build/refs/heads/zig/custom-bootstrap/build-x86_64-windows-msvc.bat
+          .\build-x86_64-windows-msvc.bat
+      - name: Pack
+        run: |
+          7z a C:\zig-bootstrap-x86_64-windows-msvc-host.7z C:\zig-bootstrap\out\host
+      - name: Update Zig Bootstrap Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: zig-build
+          files: |
+            C:\zig-bootstrap-x86_64-windows-msvc-host.7z
+  # zig-bootstrap-windows-build:
+  #   name: zig Build
+  #   runs-on: windows-2019
+  #   steps:
+  #     - uses: ilammy/msvc-dev-cmd@v1
+  #       with:
+  #         arch: amd64
+  #     - name: Build
+  #       run: |
+  #         cd C:\ ; git clone --depth 1 https://github.com/ziglang/zig-bootstrap ; cd zig-bootstrap
+  #         $ENV:CMAKE_GENERATOR=Ninja
+  #         .\build.bat
+  #         # .\build.bat x86_64-windows-gnu skylake
+  #     - name: Pack
+  #       run: |
+  #         7z a C:\zig-bootstrap-x86_64-windows-gnu.7z C:\zig-bootstrap\out-win
+  #     - name: Update Zig Release
+  #       uses: softprops/action-gh-release@v2
+  #       with:
+  #         tag_name: zig-build
+  #         files: |
+  #           C:\zig-bootstrap-x86_64-windows-gnu.7z
