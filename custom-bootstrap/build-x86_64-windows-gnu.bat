@@ -149,18 +149,43 @@ if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 cmake --build . %JOBS_ARG% --target install
 if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 
-rem Finally, we can cross compile Zig itself, with Zig.
-cd "%ROOTDIR%\zig"
-%ZIG% build ^
-  --prefix "%ROOTDIR%%OUTDIR%\zig-%TARGET%-%MCPU%" ^
-  --search-prefix "%ROOTDIR%%OUTDIR%\%TARGET%-%MCPU%" ^
-  -Dflat ^
-  -Dstatic-llvm ^
-  -Doptimize=ReleaseFast ^
-  -Dstrip ^
-  -Dtarget="%TARGET%" ^
-  -Dcpu="%MCPU%" ^
-  -Dversion-string="%ZIG_VERSION%"
+@REM rem Finally, we can cross compile Zig itself, with Zig.
+@REM cd "%ROOTDIR%\zig"
+@REM %ZIG% build ^
+@REM   --prefix "%ROOTDIR%%OUTDIR%\zig-%TARGET%-%MCPU%" ^
+@REM   --search-prefix "%ROOTDIR%%OUTDIR%\%TARGET%-%MCPU%" ^
+@REM   -Dflat ^
+@REM   -Dstatic-llvm ^
+@REM   -Doptimize=ReleaseFast ^
+@REM   -Dstrip ^
+@REM   -Dtarget="%TARGET%" ^
+@REM   -Dcpu="%MCPU%" ^
+@REM   -Dversion-string="%ZIG_VERSION%"
+@REM if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
+
+mkdir "%ROOTDIR%%OUTDIR%\build-zig-host"
+cd "%ROOTDIR%%OUTDIR%\build-zig-host"
+cmake "%ROOTDIR%/zig" ^
+  -G "Ninja" ^
+  -DCMAKE_INSTALL_PREFIX="%ROOTDIR%%OUTDIR%\zig-%TARGET%-%MCPU%" ^
+  -DCMAKE_PREFIX_PATH="%ROOTDIR%%OUTDIR%\zig-%TARGET%-%MCPU%" ^
+  -DCMAKE_BUILD_TYPE=Release ^
+  -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded ^
+  -DCMAKE_CROSSCOMPILING=True ^
+  -DCMAKE_SYSTEM_NAME="%TARGET_OS_CMAKE%" ^
+  -DCMAKE_C_COMPILER="%ZIG%;cc;-fno-sanitize=all;-fno-stack-protector;-s;-target;%TARGET%;-mcpu=%MCPU%" ^
+  -DCMAKE_CXX_COMPILER="%ZIG%;c++;-fno-sanitize=all;-fno-stack-protector;-s;-target;%TARGET%;-mcpu=%MCPU%" ^
+  -DCMAKE_ASM_COMPILER="%ZIG%;cc;-fno-sanitize=all;-fno-stack-protector;-s;-target;%TARGET%;-mcpu=%MCPU%" ^
+  -DCMAKE_RC_COMPILER="C:/zig-bootstrap-host/bin/llvm-rc.exe" ^
+  -DCMAKE_AR="C:/zig-bootstrap-host/bin/llvm-ar.exe" ^
+  -DCMAKE_RANLIB="C:/zig-bootstrap-host/bin/llvm-ranlib.exe" ^
+  -DZIG_STATIC=ON ^
+  -DZIG_STATIC_ZSTD=OFF ^
+  -DZIG_TARGET_TRIPLE="%HOST_TARGET%" ^
+  -DZIG_TARGET_MCPU=baseline
+
+if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
+cmake --build . %JOBS_ARG% --target install
 if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 
 popd
