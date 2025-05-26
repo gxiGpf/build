@@ -13,7 +13,7 @@ jobs:
     name: zls Build
     runs-on: windows-2022
     steps:
-      - uses: mlugg/setup-zig@v1
+      - uses: mlugg/setup-zig@v2
         with:
           version: master
       - name: Build Pack Zls
