@@ -13,7 +13,7 @@ jobs:
       - name: Build Pack binwalk
         run: |
           cd C:\ ; git clone --depth=1 https://github.com/ReFirmLabs/binwalk
-          rustup update
+          rustup update 
           cd binwalk
           cargo build --release
       # - uses: actions/upload-artifact@v4
