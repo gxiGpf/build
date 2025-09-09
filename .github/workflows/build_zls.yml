@@ -6,22 +6,42 @@ on:
     branches:
       - codex
 jobs:
-  codex-build:
+  # codex-build:
+  #   name: codex Build
+  #   runs-on: windows-2022
+  #   steps:
+  #     - name: Build Pack codex
+  #       run: |
+  #         cd C:\ ; git clone --depth=1 https://github.com/openai/codex
+  #         cd codex/codex-rs ; cargo build --bin codex
+  #         7z a C:\codex_master_debug.7z target/debug/codex.exe target/debug/codex.pdb
+  #     - uses: actions/upload-artifact@v4
+  #       with:
+  #         name: codex_master_debug
+  #         path: C:\codex_master_debug.7z
+  #     - name: Update codex debug
+  #       uses: softprops/action-gh-release@v2
+  #       with:
+  #         tag_name: codex-build
+  #         files: |
+  #           C:\codex_master_debug.7z
+
+  codex-custom-win-build:
     name: codex Build
     runs-on: windows-2022
     steps:
       - name: Build Pack codex
         run: |
-          cd C:\ ; git clone --depth=1 https://github.com/openai/codex
-          cd codex/codex-rs ; cargo build --bin codex
-          7z a C:\codex_master_debug.7z target/debug/codex.exe target/debug/codex.pdb
+          cd C:\ ; git clone --depth=1 https://github.com/gxiGpf/codex -b win
+          cd codex/codex-rs ; cargo build --release --bin codex
+          7z a C:\codex_custom_win_release.7z target/debug/codex.exe target/debug/codex.pdb
       - uses: actions/upload-artifact@v4
         with:
-          name: codex_master_debug
-          path: C:\codex_master_debug.7z
-      - name: Update codex debug
+          name: codex_custom_win_release
+          path: C:\codex_custom_win_release.7z
+      - name: Update codex custom win release build
         uses: softprops/action-gh-release@v2
         with:
           tag_name: codex-build
           files: |
-            C:\codex_master_debug.7z
+            C:\codex_custom_win_release.7z
