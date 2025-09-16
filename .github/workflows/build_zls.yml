@@ -32,7 +32,7 @@ jobs:
     steps:
       - name: Build Pack codex
         run: |
-          cd C:\ ; git clone --depth=1 https://github.com/gxiGpf/codex -b win
+          cd C:\ ; git clone --depth=1 https://github.com/gxiGpf/codex -b win 
           cd codex/codex-rs ; cargo build --release --bin codex
           7z a C:\codex_custom_win_release.7z target/release/codex.exe
       - uses: actions/upload-artifact@v4
@@ -46,3 +46,4 @@ jobs:
           files: |
 
             C:\codex_custom_win_release.7z
+
