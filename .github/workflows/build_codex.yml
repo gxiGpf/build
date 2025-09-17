@@ -47,3 +47,19 @@ jobs:
 
             C:\codex_custom_win_release.7z
 
+  codex-custom-more-build:
+    name: codex Build
+    runs-on: windows-2022
+    steps:
+      - name: Build Pack codex
+        run: |
+          cd C:\ ; git clone --depth=1 https://github.com/gxiGpf/codex -b more 
+          cd codex/codex-rs ; cargo build --release --bin codex
+          7z a C:\codex_custom_more_win_release.7z target/release/codex.exe
+      - name: Update codex custom win release build
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: codex-build
+          files: |
+
+            C:\codex_custom_more_win_release.7z
