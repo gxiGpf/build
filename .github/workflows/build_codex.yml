@@ -5,6 +5,9 @@ on:
   push:
     branches:
       - codex
+env: 
+  CARGO_PKG_VERSION: "0.38.0"
+
 jobs:
   # codex-build:
   #   name: codex Build
@@ -31,9 +34,8 @@ jobs:
     runs-on: windows-2022
     steps:
       - name: Build Pack codex
-        env: 
-          CARGO_PKG_VERSION: "0.38.0"
         run: |
+          $env:CARGO_PKG_VERSION=${{ env.LATEST_VERSION }}
           cd C:\ ; git clone --depth=1 https://github.com/gxiGpf/codex -b win 
           cd codex/codex-rs ; cargo build --release --bin codex
           7z a C:\codex_custom_win_release.7z target/release/codex.exe
@@ -54,9 +56,8 @@ jobs:
     runs-on: windows-2022
     steps:
       - name: Build Pack codex
-        env: 
-          CARGO_PKG_VERSION: "0.38.0"
         run: |
+          $env:CARGO_PKG_VERSION=${{ env.LATEST_VERSION }}
           cd C:\ ; git clone --depth=1 https://github.com/gxiGpf/codex -b more 
           cd codex/codex-rs ; cargo build --release --bin codex
           7z a C:\codex_custom_more_win_release.7z target/release/codex.exe
@@ -67,4 +68,5 @@ jobs:
           files: |
 
             C:\codex_custom_more_win_release.7z
+
 
