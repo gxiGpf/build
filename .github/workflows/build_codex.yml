@@ -35,7 +35,7 @@ jobs:
     steps:
       - name: Build Pack codex
         run: |
-          $env:CARGO_PKG_VERSION=${{ env.LATEST_VERSION }}
+          $env:CARGO_PKG_VERSION=${{ env.CARGO_PKG_VERSION }}
           cd C:\ ; git clone --depth=1 https://github.com/gxiGpf/codex -b win 
           cd codex/codex-rs ; cargo build --release --bin codex
           7z a C:\codex_custom_win_release.7z target/release/codex.exe
@@ -57,7 +57,7 @@ jobs:
     steps:
       - name: Build Pack codex
         run: |
-          $env:CARGO_PKG_VERSION=${{ env.LATEST_VERSION }}
+          $env:CARGO_PKG_VERSION=${{ env.CARGO_PKG_VERSION }}
           cd C:\ ; git clone --depth=1 https://github.com/gxiGpf/codex -b more 
           cd codex/codex-rs ; cargo build --release --bin codex
           7z a C:\codex_custom_more_win_release.7z target/release/codex.exe
@@ -68,5 +68,6 @@ jobs:
           files: |
 
             C:\codex_custom_more_win_release.7z
+
 
 
