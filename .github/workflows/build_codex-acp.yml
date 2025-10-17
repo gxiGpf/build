@@ -17,6 +17,13 @@ jobs:
           Add-Content -Path "Cargo.toml" -Value @'
           [patch."https://github.com/zed-industries/codex"]
           codex-core = { path = "../codex/codex-rs/core" }
+
+          codex-apply-patch = { path = "../codex/codex-rs/apply-patch" }
+          codex-arg0 = { path = "../codex/codex-rs/arg0" }
+          codex-common = { path = "../codex/codex-rs/common", features = ["cli"] }
+          codex-mcp-server = { path = "../codex/codex-rs/mcp-server" }
+          codex-protocol = { path = "../codex/codex-rs/protocol" }
+          codex-login = { path = "../codex/codex-rs/login" }
           '@
           cd C:\ ; git clone --depth=1 https://github.com/zed-industries/codex -b acp
           cd codex\codex-rs\core\src
