@@ -1,0 +1,31 @@
+name: codex-acp Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - codex
+
+jobs:
+  codex-custom-win-build:
+    name: codex Build
+    runs-on: windows-2022
+    steps:
+      - name: Build Pack codex-acp
+        run: |
+          cd C:\ ; git clone --depth=1 https://github.com/zed-industries/codex-acp ; cd codex-acp
+          Add-Content -Path "Cargo.toml" -Value @'
+          [patch."https://github.com/zed-industries/codex"]
+          codex-core = { path = "../codex/codex-rs/core" }
+          '@
+          cd C:\ ; git clone --depth=1 https://github.com/zed-industries/codex -b acp
+          cd codex\codex-rs\core\src
+          (Get-Content shell.rs) -replace '(?s)let bash_exe = if Command::new\("bash\.exe"\).*?};','let bash_exe = which::which("bash.exe").ok();' | Set-Content shell.rs
+          cd C:\codex-acp ; cargo build --release
+          7z a C:\zed-codex-acp_custom_win_release.7z target/release/codex-acp.exe
+      - name: Update zed codex-acp custom win release build
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: codex-build
+          files: |
+            C:\zed-codex-acp_custom_win_release.7z
