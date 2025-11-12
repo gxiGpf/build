@@ -16,6 +16,7 @@ jobs:
           rustup update 
           cd binwalk
           cargo build --release 
+          7z a C:\binwalk_master.7z C:\binwalk\target\release\binwalk.exe
       # - uses: actions/upload-artifact@v4
       #   with:
       #     name: binwalk_master_ReleaseSafe
@@ -30,3 +31,5 @@ jobs:
           tag_name: binwalk-build
           files: |
             C:\binwalk\target\release\binwalk.exe
+            C:\binwalk_master.7z
+
