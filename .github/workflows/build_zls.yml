@@ -21,7 +21,7 @@ jobs:
           cd C:\ ; git clone --depth=1 https://github.com/zigtools/zls
           cd zls ; zig build -Doptimize=ReleaseSafe
           7z a C:\zls_master_ReleaseSafe.7z C:\zls\zig-out\bin\zls.exe
-          zig build -Doptimize=ReleaseFast
+          zig build -Doptimize=ReleaseFast -Dcpu=skylake
           7z a C:\zls_master_ReleaseFast.7z C:\zls\zig-out\bin\zls.exe
       - uses: actions/upload-artifact@v4
         with:
@@ -38,3 +38,4 @@ jobs:
           files: |
             C:\zls_master_ReleaseSafe.7z
             C:\zls_master_ReleaseFast.7z
+
