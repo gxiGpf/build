@@ -6,8 +6,31 @@ on:
     branches:
       - zig
 jobs:
-  # zig-bootstrap-x86_64-windows-msvc-host-build:
-  #   name: Zig Bootstrap x86_64-windows-msvc Host Build
+  zig-bootstrap-x86_64-windows-msvc-host-build:
+    name: Zig Bootstrap x86_64-windows-msvc Host Build
+    runs-on: windows-2022
+    steps:
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: amd64
+      - name: Build
+        run: |
+          choco install wget
+          cd C:\ ; git clone --depth 1 https://github.com/ziglang/zig-bootstrap ; cd zig-bootstrap
+          wget https://raw.githubusercontent.com/gxiGpf/build/refs/heads/zig/custom-bootstrap/build-x86_64-windows-msvc-host.bat
+          .\build-x86_64-windows-msvc-host.bat
+      - name: Pack
+        run: |
+          7z a -r C:\zig-bootstrap-x86_64-windows-msvc-host.7z C:\zig-bootstrap\out\host\*
+      - name: Update Zig Bootstrap Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: zig-build
+          files: |
+            C:\zig-bootstrap-x86_64-windows-msvc-host.7z
+
+  # zig-bootstrap-x86_64-windows-gnu-build:
+  #   name: Zig Bootstrap x86_64-windows-gnu Build
   #   runs-on: windows-2019
   #   steps:
   #     - uses: ilammy/msvc-dev-cmd@v1
@@ -16,40 +39,17 @@ jobs:
   #     - name: Build
   #       run: |
   #         choco install wget
-  #         cd C:\ ; git clone --depth 1 https://github.com/ziglang/zig-bootstrap ; cd zig-bootstrap
-  #         wget https://raw.githubusercontent.com/gxiGpf/build/refs/heads/zig/custom-bootstrap/build-x86_64-windows-msvc.bat
-  #         .\build-x86_64-windows-msvc.bat
+  #         cd C:\ ; wget https://github.com/gxiGpf/build/releases/download/zig-build/zig-bootstrap-x86_64-windows-msvc-host.7z
+  #         7z x zig-bootstrap-x86_64-windows-msvc-host.7z -oC:\zig-bootstrap-host ; rm zig-bootstrap-x86_64-windows-msvc-host.7z
+  #         git clone --depth 1 https://github.com/ziglang/zig-bootstrap ; cd zig-bootstrap
+  #         wget https://raw.githubusercontent.com/gxiGpf/build/refs/heads/zig/custom-bootstrap/build-x86_64-windows-gnu.bat
+  #         .\build-x86_64-windows-gnu.bat
   #     - name: Pack
   #       run: |
-  #         7z a -r C:\zig-bootstrap-x86_64-windows-msvc-host.7z C:\zig-bootstrap\out\host\*
+  #         7z a -r C:\zig-bootstrap-x86_64-windows-gnu-skylake.7z C:\zig-bootstrap\out\x86_64-windows-gnu-skylake\*
   #     - name: Update Zig Bootstrap Release
   #       uses: softprops/action-gh-release@v2
   #       with:
   #         tag_name: zig-build
   #         files: |
-  #           C:\zig-bootstrap-x86_64-windows-msvc-host.7z
-
-  zig-bootstrap-x86_64-windows-gnu-build:
-    name: Zig Bootstrap x86_64-windows-gnu Build
-    runs-on: windows-2019
-    steps:
-      - uses: ilammy/msvc-dev-cmd@v1
-        with:
-          arch: amd64
-      - name: Build
-        run: |
-          choco install wget
-          cd C:\ ; wget https://github.com/gxiGpf/build/releases/download/zig-build/zig-bootstrap-x86_64-windows-msvc-host.7z
-          7z x zig-bootstrap-x86_64-windows-msvc-host.7z -oC:\zig-bootstrap-host ; rm zig-bootstrap-x86_64-windows-msvc-host.7z
-          git clone --depth 1 https://github.com/ziglang/zig-bootstrap ; cd zig-bootstrap
-          wget https://raw.githubusercontent.com/gxiGpf/build/refs/heads/zig/custom-bootstrap/build-x86_64-windows-gnu.bat
-          .\build-x86_64-windows-gnu.bat
-      - name: Pack
-        run: |
-          7z a -r C:\zig-bootstrap-x86_64-windows-gnu-skylake.7z C:\zig-bootstrap\out\x86_64-windows-gnu-skylake\*
-      - name: Update Zig Bootstrap Release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: zig-build
-          files: |
-            C:\zig-bootstrap-x86_64-windows-gnu-skylake.7z
+  #           C:\zig-bootstrap-x86_64-windows-gnu-skylake.7z
