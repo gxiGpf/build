@@ -1,0 +1,161 @@
+name: codex Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - codex
+env: 
+  CODEX_RELEASE_TAG: "rust-v0.144.1"
+
+jobs:
+#   codex-a-build-win:
+#     name: codex patch fix win Build
+#     runs-on: windows-latest
+#     steps:
+#       - name: clone codex
+#         run: |
+#           cd C:\ ; git clone --depth=1 https://github.com/openai/codex -b ${{ env.CODEX_RELEASE_TAG }}
+#       - name: patch
+#         shell: bash
+#         run: |
+#           set -euo pipefail
+
+#           if [[ -f "codex-rs/core/models.json" ]]; then
+#             models_json="codex-rs/core/models.json"
+#           elif [[ -f "models.json" ]]; then
+#             models_json="models.json"
+#           else
+#             echo "::error::models.json was not found"
+#             exit 1
+#           fi
+
+#           MODELS_JSON="$models_json" python3 <<'PYTHON'
+#           import json
+#           import os
+#           from pathlib import Path
+
+#           path = Path(os.environ["MODELS_JSON"])
+#           with path.open("r", encoding="utf-8") as file:
+#               document = json.load(file)
+
+#           models = document.get("models")
+#           if not isinstance(models, list) or not all(
+#               isinstance(model, dict) for model in models
+#           ):
+#               raise SystemExit(
+#                   f"{path}: expected a top-level 'models' array of objects"
+#               )
+
+#           models_with_field = [
+#               model for model in models if "supports_search_tool" in model
+#           ]
+#           for model in models_with_field:
+#               model["supports_search_tool"] = False
+
+#           temporary_path = path.with_name(path.name + ".tmp")
+#           with temporary_path.open("w", encoding="utf-8", newline="\n") as file:
+#               json.dump(document, file, ensure_ascii=False, indent=2)
+#               file.write("\n")
+#           os.replace(temporary_path, path)
+
+#           if any(
+#               model["supports_search_tool"] is not False
+#               for model in models_with_field
+#           ):
+#               raise SystemExit("failed to update every existing field")
+
+#           print(
+#               "Set supports_search_tool=false for "
+#               f"{len(models_with_field)} models in {path}"
+#           )
+#           print(
+#               f"Left {len(models) - len(models_with_field)} models "
+#               "without that field unchanged"
+#           )
+#           PYTHON
+#       - name: build and pack
+#         run: |
+#           cd C:\codex\codex-rs ; cargo build --release --bin codex
+#           7z a C:\codex_fix_a_release.7z target\release\codex.exe
+#       - name: Update codex custom win release build
+#         uses: softprops/action-gh-release@v3
+#         with:
+#           tag_name: codex-build
+#           files: |
+#             C:\codex_fix_a_release.7z
+  codex-a-build-macos:
+    name: codex patch fix macos Build
+    runs-on: macos-latest
+    steps:
+      - name: clone codex
+        run: |
+          git clone --depth=1 https://github.com/openai/codex -b ${{ env.CODEX_RELEASE_TAG }}
+      - name: patch
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ -f "codex/codex-rs/models-manager/models.json" ]]; then
+            models_json="codex/codex-rs/models-manager/models.json"
+          elif [[ -f "models.json" ]]; then
+            models_json="models.json"
+          else
+            echo "::error::models.json was not found"
+            exit 1
+          fi
+
+          MODELS_JSON="$models_json" python3 <<'PYTHON'
+          import json
+          import os
+          from pathlib import Path
+
+          path = Path(os.environ["MODELS_JSON"])
+          with path.open("r", encoding="utf-8") as file:
+              document = json.load(file)
+
+          models = document.get("models")
+          if not isinstance(models, list) or not all(
+              isinstance(model, dict) for model in models
+          ):
+              raise SystemExit(
+                  f"{path}: expected a top-level 'models' array of objects"
+              )
+
+          models_with_field = [
+              model for model in models if "supports_search_tool" in model
+          ]
+          for model in models_with_field:
+              model["supports_search_tool"] = False
+
+          temporary_path = path.with_name(path.name + ".tmp")
+          with temporary_path.open("w", encoding="utf-8", newline="\n") as file:
+              json.dump(document, file, ensure_ascii=False, indent=2)
+              file.write("\n")
+          os.replace(temporary_path, path)
+
+          if any(
+              model["supports_search_tool"] is not False
+              for model in models_with_field
+          ):
+              raise SystemExit("failed to update every existing field")
+
+          print(
+              "Set supports_search_tool=false for "
+              f"{len(models_with_field)} models in {path}"
+          )
+          print(
+              f"Left {len(models) - len(models_with_field)} models "
+              "without that field unchanged"
+          )
+          PYTHON
+      - name: build and pack
+        run: |
+          cd codex-rs ; cargo build --release --bin codex
+          7z a codex_fix_a_macos_release.7z target\release\codex.exe
+      - name: Update codex custom win release build
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: codex-build
+          files: |
+            C:\codex_fix_a_macos_release.7z
